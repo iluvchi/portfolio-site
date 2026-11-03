@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COYSEIO — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* photos render smooth; only gifs and pixel overlays stay pixelated */
+    img:not([src$=".gif"]) {
+      image-rendering: auto;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.67vw;
+      padding: 1.67vw;
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 20vw;
+      width: 80vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.67vw;
+      padding: 0 1.67vw;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .grid-overlay-col {
+      background: rgba(0, 100, 255, 0.07);
+    }
+
+    .info-panel {
+      position: fixed;
+      top: 1.67vw;
+      left: calc(20vw + 1.67vw);
+      width: calc((80vw - 13 * 1.67vw) / 12 * 5 + 4 * 1.67vw);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 10;
+      box-shadow: inset 0 0 0 1px #000;
+      padding: 0.83vw;
+    }
+
+    .info-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.83vw;
+    }
+
+    .project-date {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.69vw;
+      color: #000;
+      line-height: 1;
+      background-color: #E0F4FF;
+      display: flex;
+    }
+
+    .project-date span {
+      display: inline-block;
+      transform: rotate(15deg);
+      margin-right: 0.02vw;
+    }
+
+    .page-title {
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+      font-size: 0.83vw;
+      color: #000;
+      text-decoration: none;
+      display: flex;
+    }
+
+    .page-title span {
+      display: inline-block;
+      transform: rotate(15deg);
+      letter-spacing: 0.05vw;
+      margin-right: 0.02vw;
+    }
+
+    .page-content {
+      width: 100%;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      color: #000;
+      line-height: 1.25;
+    }
+
+    /* --- ROW 1 --- */
+    .row-1-a {
+      grid-column: 1 / 5;
+      width: 100%;
+      height: auto;
+      margin-top: 12.6vw;
+      align-self: start;
+    }
+
+    .row-1-b {
+      grid-column: 7 / 13;
+      position: relative;
+      align-self: start;
+    }
+
+    .row-1-b-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-1-b-overlay {
+      position: absolute;
+      width: 40%;
+      height: auto;
+      bottom: 25%;
+      right: 15%;
+      image-rendering: pixelated;
+      pointer-events: none;
+    }
+
+    /* --- ROW 2 --- */
+    .row-2-a {
+      grid-column: 6 / 11;
+      grid-row: 2;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      margin-top: -5vw;
+    }
+
+    /* --- ROW 3 --- */
+    .row-3-a {
+      grid-column: 1 / 5;
+      grid-row: 3;
+      position: relative;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      margin-top: 4vw;
+    }
+
+    .row-3-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-3-a-overlay {
+      position: absolute;
+      inset: 0;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0s;
+    }
+
+    .row-3-a:hover .row-3-a-overlay {
+      opacity: 1;
+    }
+
+    .row-3-a-overlay-img {
+      width: calc(100% - 48px);
+      margin: 0 24px;
+      display: block;
+      outline: 1px solid #000;
+    }
+
+    .row-3-b {
+      grid-column: 5 / 9;
+      grid-row: 3;
+      position: relative;
+      align-self: start;
+      margin-top: 4vw;
+    }
+
+    .row-3-b img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-3-b-alt {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      transition: none;
+    }
+
+    .row-3-c {
+      grid-column: 9 / 13;
+      grid-row: 3;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      margin-top: 4vw;
+    }
+
+    /* --- ROW 4 --- */
+    .row-4-a {
+      grid-column: 3 / 11;
+      grid-row: 4;
+      outline: 1px solid #000;
+      position: relative;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-4-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-4-a-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+    /* --- ROW 5 --- */
+    .row-5-a {
+      grid-column: 2 / 7;
+      grid-row: 5;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-5-b {
+      grid-column: 8 / 12;
+      grid-row: 5;
+      align-self: start;
+      margin-top: 18vw;
+    }
+
+    .row-5-b-img-wrap {
+      position: relative;
+    }
+
+    .row-5-b-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .row-5-b-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0s;
+    }
+
+    .row-5-b-img-wrap:hover .row-5-b-hover {
+      opacity: 1;
+    }
+
+    .row-5-b-caption {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      margin-top: 1.67vw;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      box-shadow: inset 0 0 0 1px #000;
+      padding: 0.83vw;
+    }
+
+    .row-5-c {
+      grid-column: 3 / 7;
+      grid-row: 5;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      position: relative;
+    }
+
+    .row-5-c-img, .row-5-c-alt {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-5-c-alt {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    /* --- ROW 6 --- */
+    .row-6-a {
+      grid-column: 1 / 4;
+      grid-row: 6;
+      position: relative;
+      align-self: start;
+      margin-top: 4vw;
+    }
+
+    .row-6-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-6-a-overlay {
+      position: absolute;
+      top: 0.83vw;
+      left: 0.83vw;
+      width: calc(100% - 1.67vw);
+      height: auto;
+      image-rendering: pixelated;
+      pointer-events: none;
+    }
+
+    .row-6-a-caption {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      margin-top: 0.83vw;
+      line-height: 1.4;
+    }
+
+    .row-6-b {
+      grid-column: 4 / 7;
+      grid-row: 6;
+      position: relative;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-6-b-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-6-b-alt {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+    }
+
+    .row-6-c {
+      grid-column: 7 / 10;
+      grid-row: 6;
+      position: relative;
+      align-self: start;
+      margin-top: 12vw;
+    }
+
+    .row-6-c-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-6-c-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0s;
+    }
+
+    .row-6-c:hover .row-6-c-hover {
+      opacity: 1;
+    }
+
+    .row-6-d {
+      grid-column: 10 / 13;
+      grid-row: 6;
+      align-self: start;
+      margin-top: 16vw;
+    }
+
+    .row-6-d-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* --- ROW 7 --- */
+    .row-7-a {
+      grid-column: 2 / 8;
+      grid-row: 7;
+      align-self: start;
+      margin-top: 6vw;
+    }
+
+    .row-7-a-img {
+      display: block;
+      width: 100%;
+      height: 33vw;
+      object-fit: cover;
+    }
+
+    .row-7-a-caption {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      margin-top: 0.83vw;
+      line-height: 1.4;
+    }
+
+    .row-7-b {
+      grid-column: 8 / 12;
+      grid-row: 7;
+      position: relative;
+      align-self: start;
+      margin-top: 6vw;
+    }
+
+    .row-7-b-img {
+      display: block;
+      width: 100%;
+      height: 33vw;
+      object-fit: cover;
+    }
+
+    .row-7-b-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* --- ROW 9 --- */
+    .row-9-a {
+      grid-column: 1 / 5;
+      grid-row: 9;
+      position: relative;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-9-a::after, .row-9-b::after, .row-9-c::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px #000;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .row-9-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-9-a-overlay {
+      position: absolute;
+      inset: 0;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0s;
+    }
+
+    .row-9-a:hover .row-9-a-overlay {
+      opacity: 1;
+    }
+
+    .row-9-a-overlay-img {
+      width: calc(100% - 48px);
+      margin: 0 24px;
+      display: block;
+      outline: 1px solid #000;
+    }
+
+    .row-9-b {
+      grid-column: 5 / 9;
+      grid-row: 9;
+      position: relative;
+      align-self: stretch;
+      margin-top: 8vw;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .row-9-b-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-9-b-alt {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: auto;
+      opacity: 0;
+    }
+
+    .row-9-c {
+      grid-column: 9 / 13;
+      grid-row: 9;
+      position: relative;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-9-c-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-9-c-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0s;
+    }
+
+    .row-9-c:hover .row-9-c-hover {
+      opacity: 1;
+    }
+
+    /* --- ROW 10 --- */
+    .row-10-a {
+      grid-column: 4 / 10;
+      grid-row: 10;
+      position: relative;
+      align-self: start;
+      margin-top: 8vw;
+    }
+
+    .row-10-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-10-a-alt {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+    }
+
+    /* --- ROW 11 --- */
+    .row-11-a {
+      grid-column: 5 / 9;
+      grid-row: 11;
+      align-self: start;
+      margin-top: 18vw;
+      position: relative;
+    }
+
+    .row-11-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      outline: 1px solid #000;
+    }
+
+    .row-11-a-overlay {
+      position: absolute;
+      width: 65%;       /* adjust size here */
+      top: 15%;         /* adjust vertical position here */
+      left: 35%;        /* adjust horizontal position here */
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+
+    /* --- ROW 11 TEXT --- */
+    .row-11-text-wrapper {
+      grid-column: 9 / 13;
+      grid-row: 11 / 15;
+      position: relative;
+      z-index: 2;
+    }
+
+    .row-11-text-box {
+      grid-column: 1 / 5;
+      grid-row: 11;
+      align-self: start;
+      margin-top: 18vw;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.83vw;
+      line-height: 1.4;
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      box-shadow: inset 0 0 0 1px #000;
+      padding: 0.83vw;
+    }
+
+    .row-11-text {
+      margin-top: 18vw;
+    }
+
+    .music-player {
+      background: rgba(255, 255, 255, 0.01);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      box-shadow: inset 0 0 0 1px #000;
+      padding: 0.83vw;
+    }
+
+    .music-player-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0;
+    }
+
+    .music-title {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.83vw;
+      line-height: 1.4;
+    }
+
+    .music-icon {
+      height: 1.04vw;
+      width: auto;
+      flex-shrink: 0;
+      margin-left: 0.5vw;
+    }
+
+    .music-player-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .music-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5vw;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .music-btn {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.83vw;
+      background: none;
+      border: none;
+      padding: 0;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .music-progress-line {
+      display: block;
+      height: 1px;
+      background: #000;
+      flex: 1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.1s linear;
+    }
+
+    .music-time {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.83vw;
+      margin-left: 0.5vw;
+    }
+
+    @media (max-width: 1919px) {
+      .music-title, .music-btn, .music-time {
+        font-size: 0.97vw;
+      }
+      .music-icon {
+        height: 1.25vw;
+      }
+    }
+
+    /* --- ROW 12 --- */
+    .row-12-a {
+      grid-column: 2 / 7;
+      grid-row: 12 / 14;
+      align-self: start;
+      margin-top: 18vw;
+      position: relative;
+    }
+
+    .row-12-a-lily {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40%;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+    .row-12-b {
+      grid-column: 8 / 12;
+      grid-row: 13;
+      align-self: start;
+    }
+
+    .row-12-c {
+      grid-column: 7 / 11;
+      grid-row: 12;
+      align-self: start;
+      margin-top: 22vw;
+    }
+
+    .row-12-c canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-12-a img:not(.row-12-a-lily),
+    .row-12-b img,
+    .row-12-c img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* --- ROW 13 --- */
+    .row-13-a {
+      grid-column: 3 / 9;
+      grid-row: 14;
+      align-self: start;
+      margin-top: 8vw;
+      position: relative;
+      background: #FFFFFF;
+      padding: 1.67vw;
+    }
+
+    .row-13-a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px #000;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .row-13-a-imgs {
+      position: relative;
+    }
+
+    .row-13-a-imgs::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px #000;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .row-13-a-imgs img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-13-a-alt {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: none;
+    }
+
+    @keyframes logo-flip {
+      0%   { transform: scaleX(1); }
+      25%  { transform: scaleX(0); }
+      50%  { transform: scaleX(-1); }
+      75%  { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+
+    .row-13-a-logo {
+      position: absolute;
+      width: 9%;        /* adjust size here */
+      top: 50%;          /* adjust vertical position here */
+      left: 50%;         /* adjust horizontal position here */
+      opacity: 100%;
+      transform-origin: center;
+      translate: -50% -50%;
+      animation: logo-flip 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* --- ROW 14 --- */
+    .row-14-a {
+      grid-column: 2 / 7;
+      grid-row: 15;
+      align-self: start;
+      margin-top: 6vw;
+      position: relative;
+    }
+
+    .row-14-a-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .row-14-a-overlay {
+      position: absolute;
+      width: 50%;
+      top: 30%;
+      left: 39%;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+    /* --- ROW 8 --- */
+    .row-8-a {
+      grid-column: 2 / 9;
+      grid-row: 8;
+      width: 100%;
+      height: auto;
+      align-self: start;
+      margin-top: 6vw;
+    }
+
+    #star-bg {
+      position: fixed;
+      top: 0;
+      left: 20vw;
+      width: 80vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+  @media (max-width: 1919px) {
+    .page-title {
+      font-size: 1.11vw;
+    }
+
+    .page-content {
+      font-size: 0.97vw;
+    }
+
+    .row-5-b-caption {
+      font-size: 0.97vw;
+    }
+
+    .row-6-a-caption {
+      font-size: 0.97vw;
+    }
+
+    .row-7-a-caption {
+      font-size: 0.97vw;
+    }
+
+    .row-11-text-box {
+      font-size: 0.97vw;
+    }
+
+    .project-date {
+      font-size: 0.97vw;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .info-panel {
+      width: calc((85vw - 13 * 1.67vw) / 12 * 5 + 4 * 1.67vw);
+    }
+
+    .grid-overlay {
+      left: 15vw;
+      width: 85vw;
+    }
+
+    #star-bg {
+      left: 15vw;
+      width: 85vw;
+    }
+
+    .info-panel {
+      left: calc(15vw + 1.67vw);
+    }
+  }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <canvas id="star-bg"></canvas>
+  <div class="grid-overlay" style="display:none;">
+    <div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div>
+  </div>
+
+  <main>
+    <img class="row-1-a" src="assets/coyseio-jisoo-2.jpg" alt="">
+    <div class="row-1-b">
+      <img class="row-1-b-img" src="assets/1_coyseio_cropped_1440.gif" alt="">
+    </div>
+    <img class="row-2-a" src="assets/coyseio-kiko-2.jpg" alt="">
+    <div class="row-3-a">
+      <img class="row-3-a-img" src="assets/coyseio-jisoo-3.jpg" alt="">
+      <div class="row-3-a-overlay">
+        <img class="row-3-a-overlay-img" src="assets/coyseio-shoes-1.jpg" alt="">
+      </div>
+    </div>
+    <div class="row-3-b">
+      <img src="assets/coyseio-jisoo-1.jpg" alt="">
+      <img class="row-3-b-alt" src="assets/coyseio-jisoo-1-hover.jpg" alt="">
+    </div>
+    <img class="row-3-c" src="assets/coyseio-product-1.jpg" alt="">
+    <div class="row-4-a">
+      <img class="row-4-a-img" src="assets/coyseio-kiko-4.jpg" alt="">
+      <img class="row-4-a-frame" src="assets/flower-frame.gif" alt="">
+    </div>
+    <img class="row-5-a" src="assets/coyseio-kiko-5.jpg" alt="">
+    <div class="row-5-b">
+      <div class="row-5-b-img-wrap">
+        <img class="row-5-b-img" src="assets/coyseio-kiko-6.jpg" alt="">
+        <img class="row-5-b-hover" src="assets/coyseio-kiko-6-hover.jpg" alt="">
+      </div>
+      <p class="row-5-b-caption">I love this photo of Kiko frolicking throughout the flower field. So playful 𝅘𝅥<br><br>
+        I’ve been such a big fan of Kiko ever since high school. She’s been really inspiring to me. I love her style, her attitude on life, and her humbleness.<br><br>
+        When I found out that she’d be modeling this campaign, I was elated. How did this project turn out so perfectly? I still can't wrap my mind around it.</p>
+    </div>
+    <div class="row-5-c">
+      <img class="row-5-c-img" src="assets/coyseio-cap-navy.jpg" alt="">
+      <img class="row-5-c-alt" src="assets/coyseio-cap-brown.jpg" alt="">
+    </div>
+    <div class="row-6-a">
+      <img class="row-6-a-img" src="assets/coyseio-store-1.jpg" alt="">
+      <img class="row-6-a-overlay" src="assets/flowers-row.gif" alt="">
+      <p class="row-6-a-caption">One of the coolest feelings was seeing all the finished pieces in the adorable COYSEIO storefronts. What a dream ~ </p>
+    </div>
+    <div class="row-6-b">
+      <img class="row-6-b-img" src="assets/coyseio-jisoo-4.jpg" alt="">
+      <img class="row-6-b-alt" src="assets/coyseio-jisoo-4b.jpg" alt="">
+    </div>
+    <div class="row-6-c">
+      <img class="row-6-c-img" src="assets/coyseio-bag-1.jpg" alt="">
+      <img class="row-6-c-hover" src="assets/coyseio-bag-1-hover.jpg" alt="">
+    </div>
+    <div class="row-6-d">
+      <img class="row-6-d-img" src="assets/coyseio-jewelry-1.jpg" alt="">
+    </div>
+    <div class="row-7-a">
+      <img class="row-7-a-img" src="assets/coyseio-towel-1.jpg" alt="">
+      <p class="row-7-a-caption">My kitty, Chi =^•x•^=, really loves this towel. It's super soft. She loves to snuggle on it.</p>
+    </div>
+    <div class="row-7-b">
+      <img class="row-7-b-img" src="assets/coyseio-towel-2.jpg" alt="">
+      <img class="row-7-b-hover" src="assets/coyseio-towel-2-hover.jpg" alt="">
+    </div>
+    <img class="row-8-a" src="assets/coyseio-kiko-8.jpg" alt="">
+    <div class="row-9-a">
+      <img class="row-9-a-img" src="assets/coyseio-tshirt-1.jpg" alt="">
+      <div class="row-9-a-overlay">
+        <img class="row-9-a-overlay-img" src="assets/coyseio-tshirt-1-hover.jpg" alt="">
+      </div>
+    </div>
+    <div class="row-9-b">
+      <img class="row-9-b-img" src="assets/coyseio-tshirt-2.jpg" alt="">
+      <img class="row-9-b-alt" src="assets/coyseio-tshirt-2-alt.jpg" alt="">
+    </div>
+    <div class="row-9-c">
+      <img class="row-9-c-img" src="assets/coyseio-tshirt-3.jpg" alt="">
+      <img class="row-9-c-hover" src="assets/coyseio-tshirt-3-hover.jpg" alt="">
+    </div>
+    <div class="row-10-a">
+      <img class="row-10-a-img" src="assets/coyseio-jisoo-5.jpg" alt="">
+      <img class="row-10-a-alt" src="assets/coyseio-jisoo-5b.jpg" alt="">
+    </div>
+    <div class="row-11-a">
+      <img class="row-11-a-img" src="assets/coyseio-kiko-7.jpg" alt="">
+      <img class="row-11-a-overlay" src="assets/music-notes.gif" alt="">
+    </div>
+    <div class="row-11-text-box">
+      <a href="https://tamanaramen.bandcamp.com/" target="_blank" style="color:inherit;text-decoration:underline;">tamanaramen</a> was the artist whose music accompanied this campaign. They're a Tokyo-based sister duo that creates the most ethereal music.<br></br>
+      I'd been a fan of them for a while. Their magical music sounds like what I'd imagine fairy music sounds like. When I found out they'd created the audio complement to this campaign, I was so happy!
+    </div>
+    <div class="row-11-text-wrapper">
+      <div class="row-11-text">
+        <div class="music-player">
+          <audio id="tama-audio" src="assets/coyseio-hs-2025.mp3" preload="metadata"></audio>
+          <div class="music-player-top">
+            <span class="music-title">COYSEIO H/S 2025 by tamanaramen</span>
+            <img class="music-icon" src="assets/music-player-icon.webp" alt="" style="image-rendering:pixelated;">
+          </div>
+          <div class="music-player-bottom">
+            <div class="music-left">
+              <button class="music-btn" id="tama-btn">Play</button>
+              <span class="music-progress-line" id="tama-line"></span>
+            </div>
+            <span class="music-time" id="tama-time">—:——</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row-12-a">
+      <img src="assets/coyseio-kiko-9.jpg" alt="">
+      <img class="row-12-a-lily" src="assets/lily-pingpong.gif" alt="">
+    </div>
+    <div class="row-12-b">
+      <img src="assets/coyseio-kiko-10.jpg" alt="">
+    </div>
+    <div class="row-12-c">
+      <img src="assets/coyseio-kiko-11.jpg" alt="">
+      <img class="row-12-c-alt" src="assets/coyseio-kiko-11-alt.jpg" alt="">
+    </div>
+    <div class="row-13-a">
+      <div class="row-13-a-imgs">
+        <img src="assets/coyseio-jisoo-8.jpg" alt="">
+        <img class="row-13-a-alt" src="assets/coyseio-jisoo-8-alt.jpg" alt="">
+      </div>
+      <img class="row-13-a-logo" src="assets/coyseio-logo.png" alt="">
+    </div>
+    <div class="row-14-a">
+      <img class="row-14-a-img" src="assets/coyseio-kiko-1.jpg" alt="">
+      <img class="row-14-a-overlay" src="assets/flowers.gif" alt="">
+    </div>
+  </main>
+  <div class="info-panel">
+    <div class="info-panel-header">
+      <div class="page-title" id="page-title">COYSEIO x Kiko Mizuhara</div>
+      <span class="project-date" id="project-date">SUMMER 2025</span>
+    </div>
+    <div class="page-content">
+      I worked on COYSEIO's 2025 H/S Collection with Kiko Mizuhara. I was the first artist to be featured across a collection for the brand.<br><br>
+      I worked closely with their creative team to concept and create a ceramic doll that captures the essence of my signature work with COYSEIO's undeniable charm.
+    </div>
+  </div>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    const canvas = document.getElementById('star-bg');
+    const ctx = canvas.getContext('2d');
+
+    // Reference values at 1920px monitor (canvas = 85vw = 1632px)
+    const REF_W = 1632;
+    const REF_STAR = 20;
+    const REF_GAP_X = 36;
+    const REF_GAP_Y = 10;
+    const SPEED = 0.4;
+
+    let STAR_W, STAR_H, GAP_X, GAP_Y, CELL_X, CELL_Y;
+    let offset = 0;
+    const img = new Image();
+    img.src = 'assets/star.png';
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      const scale = canvas.width / REF_W;
+      STAR_W = REF_STAR * scale;
+      STAR_H = REF_STAR * scale * (360 / 379);
+      GAP_X  = REF_GAP_X * scale;
+      GAP_Y  = REF_GAP_Y * scale;
+      CELL_X = STAR_W + GAP_X;
+      CELL_Y = STAR_H + GAP_Y;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const ox = offset % (2 * CELL_X);
+      const oy = offset % (2 * CELL_Y);
+
+      for (let row = -1; row < Math.ceil(canvas.height / CELL_Y) + 2; row++) {
+        const stagger = (row % 2 === 0) ? 0 : CELL_X / 2;
+        const y = row * CELL_Y - CELL_Y + oy;
+        for (let col = -1; col < Math.ceil(canvas.width / CELL_X) + 2; col++) {
+          const x = col * CELL_X - CELL_X + ox + stagger;
+          ctx.drawImage(img, x, y, STAR_W, STAR_H);
+        }
+      }
+
+      offset += SPEED;
+      requestAnimationFrame(draw);
+    }
+
+    img.onload = () => { resize(); draw(); };
+    window.addEventListener('resize', resize);
+  </script>
+  <script>
+    const date = document.getElementById('project-date');
+    date.innerHTML = date.textContent.split('').map(l =>
+      l === ' ' ? `<span style="display:inline-block;transform:none;width:0.2em;">&nbsp;</span>` : `<span>${l}</span>`
+    ).join('');
+
+    function positionContentImage() {
+      const panel = document.querySelector('.info-panel');
+      const img = document.querySelector('.row-1-a');
+      const panelBottom = panel.getBoundingClientRect().bottom;
+      const gridPadding = parseFloat(getComputedStyle(document.querySelector('main')).paddingTop);
+      img.style.marginTop = (panelBottom - gridPadding + gridPadding) + 'px';
+    }
+
+    positionContentImage();
+    window.addEventListener('resize', positionContentImage);
+
+    const title = document.getElementById('page-title');
+    title.innerHTML = title.textContent.split('').map(l =>
+      l === ' ' ? `<span style="display:inline-block;transform:none;width:0.2em;">&nbsp;</span>` : `<span>${l}</span>`
+    ).join('');
+
+    // Auto-toggle row-3-b image every second
+    (function () {
+      const hover = document.querySelector('.row-3-b-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        hover.style.opacity = visible ? '1' : '0';
+      }, 1000);
+    })();
+
+    // Auto-toggle row-6-b image every 0.8s
+    (function () {
+      const b = document.querySelector('.row-6-b-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        b.style.opacity = visible ? '1' : '0';
+      }, 800);
+    })();
+
+    // Auto-toggle row-9-b every second
+    (function () {
+      const b = document.querySelector('.row-9-b-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        b.style.opacity = visible ? '1' : '0';
+      }, 1000);
+    })();
+
+    // Auto-toggle row-10-a every 1.5s
+    (function () {
+      const b = document.querySelector('.row-10-a-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        b.style.opacity = visible ? '1' : '0';
+      }, 1500);
+    })();
+
+
+    // Auto-toggle row-13-a every 0.8s
+    (function () {
+      const b = document.querySelector('.row-13-a-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        b.style.opacity = visible ? '1' : '0';
+      }, 800);
+    })();
+
+
+    // Pixel dissolve row-12-c
+    (function () {
+      const container = document.querySelector('.row-12-c');
+      const imgA = container.querySelector('img:first-child');
+      const imgB = container.querySelector('.row-12-c-alt');
+      const BLOCK = 4; // pixel block size — smaller = finer grain
+      const HOLD = 3000; // ms to hold each image before dissolving
+
+      function setup() {
+        const w = imgA.naturalWidth;
+        const h = imgA.naturalHeight;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        container.insertBefore(canvas, imgA);
+        imgA.style.display = 'none';
+        imgB.style.display = 'none';
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(imgA, 0, 0);
+
+        const cols = Math.ceil(w / BLOCK);
+        const rows = Math.ceil(h / BLOCK);
+        const blocks = [];
+        for (let r = 0; r < rows; r++)
+          for (let c = 0; c < cols; c++)
+            blocks.push([c * BLOCK, r * BLOCK]);
+
+        function shuffle(arr) {
+          const a = [...arr];
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+
+        function dissolve(fromImg, toImg, onDone) {
+          const order = shuffle(blocks);
+          const totalFrames = 60; // dissolve duration in frames (~1.3s at 60fps)
+          const batchSize = Math.ceil(order.length / totalFrames);
+          let idx = 0;
+          function step() {
+            for (let i = 0; i < batchSize && idx < order.length; i++, idx++) {
+              const [x, y] = order[idx];
+              ctx.drawImage(toImg, x, y, BLOCK, BLOCK, x, y, BLOCK, BLOCK);
+            }
+            if (idx < order.length) requestAnimationFrame(step);
+            else onDone();
+          }
+          requestAnimationFrame(step);
+        }
+
+        let showingA = true;
+        function cycle() {
+          setTimeout(() => {
+            if (showingA) dissolve(imgA, imgB, () => { showingA = false; cycle(); });
+            else          dissolve(imgB, imgA, () => { showingA = true;  cycle(); });
+          }, HOLD);
+        }
+        cycle();
+      }
+
+      let loaded = 0;
+      function onLoad() { if (++loaded === 2) setup(); }
+      imgA.complete ? onLoad() : imgA.addEventListener('load', onLoad);
+      imgB.complete ? onLoad() : imgB.addEventListener('load', onLoad);
+    })();
+
+    // Pixel dissolve hover for row-7-b
+    (function () {
+      const container = document.querySelector('.row-7-b');
+      const imgA = container.querySelector('.row-7-b-img');
+      const imgB = container.querySelector('.row-7-b-hover');
+      const BLOCK = 4;
+
+      function setup() {
+        // Use natural resolution so block size matches row-12-c density
+        const displayAspect = imgA.offsetHeight / imgA.offsetWidth;
+        const cw = imgA.naturalWidth;
+        const ch = Math.round(cw * displayAspect);
+
+        // Off-screen canvases with cover-crop of each image at natural resolution
+        function makeCover(img) {
+          const oc = document.createElement('canvas');
+          oc.width = cw; oc.height = ch;
+          const c = oc.getContext('2d');
+          const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+          const sw = cw / scale, sh = ch / scale;
+          const sx = (img.naturalWidth - sw) / 2, sy = (img.naturalHeight - sh) / 2;
+          c.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+          return oc;
+        }
+
+        const offA = makeCover(imgA);
+        const offB = makeCover(imgB);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:block;';
+        container.appendChild(canvas);
+        imgA.style.visibility = 'hidden';
+        imgB.style.visibility = 'hidden';
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(offA, 0, 0);
+
+        const cols = Math.ceil(cw / BLOCK);
+        const rows = Math.ceil(ch / BLOCK);
+        const allBlocks = [];
+        for (let r = 0; r < rows; r++)
+          for (let c = 0; c < cols; c++)
+            allBlocks.push([c * BLOCK, r * BLOCK]);
+
+        function shuffle(arr) {
+          const a = [...arr];
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+
+        let raf = null;
+        let showingA = true;
+        let hovered = false;
+        let dissolving = false;
+
+        function dissolve(toCanvas, onDone) {
+          if (raf) cancelAnimationFrame(raf);
+          const order = shuffle(allBlocks);
+          const totalFrames = 30;
+          const batchSize = Math.ceil(order.length / totalFrames);
+          let idx = 0;
+          function step() {
+            for (let i = 0; i < batchSize && idx < order.length; i++, idx++) {
+              const [x, y] = order[idx];
+              ctx.drawImage(toCanvas, x, y, BLOCK, BLOCK, x, y, BLOCK, BLOCK);
+            }
+            if (idx < order.length) raf = requestAnimationFrame(step);
+            else { raf = null; dissolving = false; onDone(); }
+          }
+          raf = requestAnimationFrame(step);
+        }
+
+        function tryDissolve() {
+          if (dissolving) return;
+          if (hovered && showingA) {
+            dissolving = true;
+            dissolve(offB, () => { showingA = false; tryDissolve(); });
+          } else if (!hovered && !showingA) {
+            dissolving = true;
+            dissolve(offA, () => { showingA = true; tryDissolve(); });
+          }
+        }
+
+        container.addEventListener('mouseenter', () => { hovered = true;  tryDissolve(); });
+        container.addEventListener('mouseleave', () => { hovered = false; tryDissolve(); });
+      }
+
+      let loaded = 0;
+      function onLoad() { if (++loaded === 2) setup(); }
+      imgA.complete ? onLoad() : imgA.addEventListener('load', onLoad);
+      imgB.complete ? onLoad() : imgB.addEventListener('load', onLoad);
+    })();
+
+    // Auto-toggle row-5-c image every second
+    (function () {
+      const b = document.querySelector('.row-5-c-alt');
+      let visible = false;
+      setInterval(() => {
+        visible = !visible;
+        b.style.opacity = visible ? '1' : '0';
+      }, 1000);
+    })();
+
+    // Keep gap above row-5-c consistent across breakpoints
+    function positionRow5c() {
+      const a = document.querySelector('.row-5-a');
+      const c = document.querySelector('.row-5-c');
+      const aMarginTop = parseFloat(getComputedStyle(a).marginTop);
+      const desiredGap = window.innerWidth * 0.084;
+      c.style.marginTop = (aMarginTop + a.offsetHeight + desiredGap) + 'px';
+    }
+    window.addEventListener('load', positionRow5c);
+    window.addEventListener('resize', positionRow5c);
+
+    // Release info-panel from fixed when its bottom passes the bottom of row-2-a
+    (function () {
+      const panel = document.querySelector('.info-panel');
+      const secondImage = document.querySelector('.row-2-a');
+      const fixedTop = panel.getBoundingClientRect().top;
+      let releaseScrollY = null;
+
+      function updatePanel() {
+        const scrollY = window.pageYOffset;
+
+        if (releaseScrollY === null) {
+          const panelBottom = panel.getBoundingClientRect().bottom;
+          const imageBottom = secondImage.getBoundingClientRect().bottom;
+          if (imageBottom <= panelBottom) {
+            releaseScrollY = scrollY;
+            const absImageBottom = scrollY + imageBottom;
+            panel.style.position = 'absolute';
+            panel.style.top = (absImageBottom - panel.offsetHeight) + 'px';
+          }
+        } else {
+          const panelBottom = fixedTop + panel.offsetHeight;
+          const imageBottom = secondImage.getBoundingClientRect().bottom;
+          if (imageBottom > panelBottom) {
+            releaseScrollY = null;
+            panel.style.position = '';
+            panel.style.top = '';
+          }
+        }
+      }
+
+      window.addEventListener('scroll', updatePanel);
+      window.addEventListener('load', updatePanel);
+    })();
+
+    // Scroll-driven sticky for row-11-text
+    (function () {
+      const text = document.querySelector('.row-11-text');
+      const wrapper = document.querySelector('.row-11-text-wrapper');
+
+      let textDocTop, wrapperDocBottom, wLeft, wWidth, textH;
+
+      function measure() {
+        // Temporarily put text in natural flow to get true measurements
+        const saved = text.style.cssText;
+        text.style.cssText = '';
+
+        const tRect = text.getBoundingClientRect();
+        const wRect = wrapper.getBoundingClientRect();
+        textDocTop      = tRect.top    + window.scrollY;
+        wrapperDocBottom = wRect.bottom + window.scrollY;
+        wLeft  = wRect.left;
+        wWidth = wRect.width;
+        textH  = text.offsetHeight;
+
+        text.style.cssText = saved;
+      }
+
+      function update() {
+        const scrollY = window.scrollY;
+        const pad = window.innerWidth * 0.0167;
+        const stickyOn  = textDocTop - pad;
+        const stickyOff = wrapperDocBottom - textH - pad;
+
+        if (scrollY < stickyOn) {
+          text.style.cssText = '';
+        } else if (scrollY <= stickyOff) {
+          text.style.cssText = `position:fixed;top:1.67vw;left:${wLeft}px;width:${wWidth}px;margin-top:0;box-sizing:border-box;z-index:2;`;
+        } else {
+          text.style.cssText = 'position:absolute;bottom:0;left:0;width:100%;margin-top:0;box-sizing:border-box;';
+        }
+      }
+
+      window.addEventListener('scroll', update);
+      window.addEventListener('resize', () => { measure(); update(); });
+      window.addEventListener('load', () => { measure(); update(); });
+    })();
+
+    // Music player
+    (function () {
+      const audio = document.getElementById('tama-audio');
+      const btn   = document.getElementById('tama-btn');
+      const line  = document.getElementById('tama-line');
+      const time  = document.getElementById('tama-time');
+
+      function fmt(s) {
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return m + ':' + String(sec).padStart(2, '0');
+      }
+
+      audio.addEventListener('loadedmetadata', () => {
+        time.textContent = fmt(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        if (!audio.duration) return;
+        const pct = audio.currentTime / audio.duration;
+        line.style.transform = `scaleX(${pct})`;
+        time.textContent = fmt(audio.duration - audio.currentTime);
+      });
+
+      audio.addEventListener('ended', () => {
+        btn.textContent = 'Play';
+        line.style.transform = 'scaleX(0)';
+        time.textContent = fmt(audio.duration);
+      });
+
+      btn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          btn.textContent = 'Pause';
+        } else {
+          audio.pause();
+          btn.textContent = 'Play';
+        }
+      });
+    })();
+
+  </script>
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'h' || e.key === 'H') {
+        const overlay = document.querySelector('.grid-overlay');
+        overlay.style.display = overlay.style.display === 'none' ? 'grid' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>

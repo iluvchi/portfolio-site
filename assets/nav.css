@@ -1,0 +1,362 @@
+@font-face {
+  font-family: 'Source Serif Pro Light Italic';
+  src: url('fonts/SourceSerif4-Italic-VF.ttf') format('truetype');
+  font-weight: 200 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'GT Pressura Mono Light';
+  src: url('fonts/GT-Pressura-Mono-VF.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: normal;
+}
+
+/* ABC Favorit Lining and ABC Favorit Edu are separate font files with
+   genuinely different vertical metrics (hhea ascent/descent: Lining is
+   950/-390, Edu is 1040/-340, both units-per-em 1000) — without correcting
+   this, swapping between them on hover shifts the baseline by a few pixels.
+   Forcing identical override metrics on all four so hover font swaps never
+   move the text. */
+@font-face {
+  font-family: 'ABC Favorit Lining Edu';
+  src: url('fonts/ABCFavoritLiningEdu-Book.woff2') format('woff2'),
+       url('fonts/ABCFavoritLiningEdu-Book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Lining Edu Light';
+  src: url('fonts/ABCFavoritLiningEdu-Light.woff2') format('woff2'),
+       url('fonts/ABCFavoritLiningEdu-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Edu';
+  src: url('fonts/ABCFavoritEdu-Book.woff2') format('woff2'),
+       url('fonts/ABCFavoritEdu-Book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Edu Light';
+  src: url('fonts/ABCFavoritEdu-Light.woff2') format('woff2'),
+       url('fonts/ABCFavoritEdu-Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Lining Edu Medium';
+  src: url('fonts/ABCFavoritLiningEdu-Medium.woff2') format('woff2'),
+       url('fonts/ABCFavoritLiningEdu-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Favorit Edu Medium';
+  src: url('fonts/ABCFavoritEdu-Medium.woff2') format('woff2'),
+       url('fonts/ABCFavoritEdu-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  ascent-override: 95%;
+  descent-override: 39%;
+  line-gap-override: 0%;
+}
+
+* {
+  cursor: url('cursors/white-simple.cur'), default;
+}
+
+a, button, [role="button"] {
+  cursor: url('cursors/white-simple.cur'), pointer;
+}
+
+::selection {
+  background: #FFE8F2;
+  color: #000;
+}
+
+::-moz-selection {
+  background: #FFE8F2;
+  color: #000;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20vw;
+  height: 100vh;
+  border-right: 1px solid #000;
+  overflow: visible;
+}
+
+.nav-logo {
+  position: absolute;
+  top: 1.67vw;
+  left: 1.7vw;
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+  font-size: 0.83vw;
+  color: #000;
+  text-decoration: none;
+  z-index: 1;
+  display: flex;
+}
+
+.nav-logo span {
+  display: inline-block;
+  transform: rotate(15deg);
+  letter-spacing: 0.05vw;
+  margin-right: 0.02vw;
+  transition: none;
+}
+
+.nav-logo:hover span {
+  transform: rotate(-15deg);
+}
+
+.nav-link {
+  position: absolute;
+  font-family: 'ABC Favorit Lining Edu Light', sans-serif;
+  font-size: 0.83vw;
+  color: #000;
+  text-decoration: none;
+  line-height: 1;
+  vertical-align: top;
+}
+
+.nav-group {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.28vw;
+  font-size: 0.83vw;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-group img {
+  height: 1.25vw;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+.nav-group img[src*="write.gif"] {
+  image-rendering: pixelated;
+}
+
+/* smaller variant — travels with the icon, not the link */
+.nav-group img.nav-icon-sm {
+  height: 1.1vw;
+}
+
+.nav-group-text {
+  font-family: 'ABC Favorit Lining Edu Light', sans-serif;
+  font-size: 0.83vw;
+  color: #000;
+  text-decoration: none;
+  line-height: 1;
+  vertical-align: top;
+}
+
+.nav-arrow {
+  display: inline-block;
+  margin-left: 0.15vw;
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+}
+
+.nav-link:hover {
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+  background-color: #D6E6E4;
+}
+
+/* not a link — same type style as .nav-link, no hover affordance */
+.nav-credit {
+  position: absolute;
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+  font-size: 0.83vw;
+  color: #000;
+  line-height: 1;
+  vertical-align: top;
+}
+
+.nav-credit img {
+  height: 1.1vw;
+  width: auto;
+  margin-left: 0.3vw;
+  vertical-align: -0.2vw;
+}
+
+#projects-link:hover,
+#projects-link.active {
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+  background-color: transparent;
+}
+
+.nav-group:hover .nav-group-text {
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+  background-color: #D6E6E4;
+}
+
+#email-copy .label-hover,
+#email-copy .label-copied {
+  display: none;
+}
+
+#email-copy:hover .label-default {
+  display: none;
+}
+
+#email-copy:hover .label-hover {
+  display: inline;
+}
+
+#email-copy.copied .label-default,
+#email-copy.copied .label-hover {
+  display: none;
+}
+
+#email-copy.copied .label-copied {
+  display: inline;
+}
+
+.subnav {
+  position: absolute;
+  left: 3.2vw;
+  right: -1px;
+  top: calc(9.9vh + 1.4em);
+  width: auto;
+  background: url('subnav-bg.jpg') center / cover no-repeat;
+  border: 1px solid #000;
+  display: none;
+  padding: 0.83vw;
+  z-index: 10;
+}
+
+.subnav.open {
+  display: block;
+}
+
+.subnav a {
+  position: relative;
+  display: block;
+  font-family: 'ABC Favorit Lining Edu Light', sans-serif;
+  font-size: 0.83vw;
+  color: #000;
+  text-decoration: none;
+  padding: 12px 0;
+  line-height: 1;
+}
+
+.subnav a:first-child {
+  padding-top: 0;
+}
+
+.subnav a:last-child {
+  padding-bottom: 0;
+}
+
+.subnav a:hover {
+  font-family: 'ABC Favorit Edu Light', sans-serif;
+}
+
+.subnav a.subnav-more {
+  text-align: right;
+}
+
+.subnav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.subnav-row a {
+  padding-bottom: 0;
+}
+
+.nav-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: block;
+  image-rendering: pixelated;
+  pointer-events: none;
+  filter: saturate(1);
+}
+
+main {
+  margin-left: 20vw;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+
+@media (max-width: 1919px) {
+  .nav-logo {
+    font-size: 1.11vw;
+  }
+
+  .nav-link,
+  .nav-credit {
+    font-size: 1.11vw;
+  }
+
+  .nav-group {
+    font-size: 1.11vw;
+  }
+
+  .nav-group-text {
+    font-size: 1.11vw;
+  }
+
+  .subnav a {
+    font-size: 1.11vw;
+  }
+
+  .nav-group img {
+    height: 1.5vw;
+  }
+
+  .nav-group img.nav-icon-sm {
+    height: 1.3vw;
+  }
+}
+
+@media (min-width: 1920px) {
+  nav {
+    width: 15vw;
+  }
+
+  main {
+    margin-left: 15vw;
+  }
+
+  .nav-group img {
+    height: 1.25vw;
+  }
+}
+
+

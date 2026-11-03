@@ -1,0 +1,107 @@
+#site-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #fff;
+  overflow: hidden;
+}
+
+.site-gate-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.site-gate-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26vw;
+  min-width: 300px;
+  max-width: 86vw;
+  height: 10vw;
+  min-height: 140px;
+  padding: 1.8vw;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid #000;
+  text-align: left;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.site-gate-label {
+  font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-variation-settings: 'wght' 300;
+  font-size: 1vw;
+  line-height: 1.25;
+  color: #000;
+  margin: 0;
+}
+
+.site-gate-form {
+  display: flex;
+  gap: 0.42vw;
+}
+
+.site-gate-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5vw 0.6vw;
+  border: 1px solid #000;
+  background: #fff;
+  font-family: 'GT Pressura Mono Light', monospace;
+  font-weight: 300;
+  font-size: 0.73vw;
+  color: #000;
+}
+
+.site-gate-submit {
+  padding: 0.5vw 0.9vw;
+  border: 1px solid #000;
+  background: #fff;
+  cursor: pointer;
+  font-family: 'GT Pressura Mono Light', monospace;
+  font-weight: 300;
+  font-size: 0.73vw;
+  color: #000;
+}
+
+.site-gate-submit:hover {
+  background: #000;
+  color: #fff;
+}
+
+.site-gate-error {
+  margin: 0.6vw 0 0;
+  font-family: 'GT Pressura Mono Light', monospace;
+  font-weight: 300;
+  font-size: 0.73vw;
+  color: #c0392b;
+  display: none;
+}
+
+.site-gate-error.show {
+  display: block;
+}
+
+@media (max-width: 1919px) {
+  .site-gate-label {
+    font-size: 1.33vw;
+  }
+
+  .site-gate-input,
+  .site-gate-submit {
+    font-size: 1.11vw;
+  }
+
+  .site-gate-error {
+    font-size: 0.97vw;
+  }
+}

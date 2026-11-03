@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i see the world — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* photos render smooth; only gifs and tiled backgrounds stay pixelated */
+    img:not([src$=".gif"]) {
+      image-rendering: auto;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    main {
+      background-image: url('assets/isee-bg.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+    }
+
+    /* horizontal scroll row — poster starts flush at the first column,
+       everything after it scrolls into view to the right */
+    .gallery-scroll {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.67vw;
+      overflow-x: auto;
+      padding: 1.67vw;
+    }
+
+    .gallery-scroll img {
+      flex: none;
+      height: 70vh;
+      width: auto;
+      border: 1px solid #000;
+    }
+
+    /* 12-column reference grid — toggle with the H key */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 20vw;
+      width: 80vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.67vw;
+      padding: 0 1.67vw;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .grid-overlay-col {
+      background: rgba(0, 100, 255, 0.07);
+    }
+
+    @media (min-width: 1920px) {
+      .grid-overlay {
+        left: 15vw;
+        width: 85vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <div class="grid-overlay" style="display:none;">
+    <div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div>
+  </div>
+  <main>
+    <div class="gallery-scroll">
+      <img src="assets/isee-the-world/poster.jpg" alt="">
+      <img src="assets/isee-the-world/social-2.jpg" alt="">
+      <img src="assets/isee-the-world/social-3.jpg" alt="">
+      <img src="assets/isee-the-world/social-4.jpg" alt="">
+      <img src="assets/isee-the-world/social-5.jpg" alt="">
+    </div>
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'h' || e.key === 'H') {
+        const overlay = document.querySelector('.grid-overlay');
+        overlay.style.display = overlay.style.display === 'none' ? 'grid' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>

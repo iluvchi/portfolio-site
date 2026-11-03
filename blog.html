@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>blog — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+      background-image: url('assets/blog-bg.gif');
+      background-repeat: repeat;
+      background-size: 110px 110px;
+      background-attachment: fixed;
+      image-rendering: pixelated;
+    }
+
+    main {
+      padding: 1.67vw;
+    }
+
+    /* page-scoped: white hover instead of the shared teal */
+    .nav-link:hover,
+    .nav-group:hover .nav-group-text {
+      background-color: #ffffff;
+    }
+
+    /* ---- grid table: date left, entry right, double-border cells ---- */
+    .blog-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .blog-date-cell,
+    .blog-entry-cell {
+      border: 3px double #000;
+      vertical-align: top;
+      padding: 0.83vw;
+      background-color: #ffffff;
+      background-image: url('assets/video-diary-bg.gif');
+      background-repeat: repeat;
+      background-size: 150px 150px;
+      background-attachment: fixed;
+      image-rendering: pixelated;
+    }
+
+    .blog-date-cell {
+      width: 12vw;
+    }
+
+    .blog-header {
+      font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-variation-settings: 'wght' 300;
+      font-size: 0.83vw;
+      color: #000;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 1919px) {
+      .blog-header {
+        font-size: 1.11vw;
+      }
+    }
+
+    .blog-body {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      color: #000;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 1919px) {
+      .blog-body {
+        font-size: 0.97vw;
+      }
+    }
+
+    /* two-column entry: body left, ascii art right */
+    .blog-cols {
+      display: flex;
+      gap: 1.67vw;
+      align-items: flex-start;
+    }
+
+    .blog-cols .blog-body {
+      flex: 1;
+    }
+
+    .blog-ascii {
+      flex: none;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      line-height: 1.25;
+      color: #000;
+      white-space: pre;
+    }
+
+    @media (max-width: 1919px) {
+      .blog-ascii {
+        font-size: 0.97vw;
+      }
+    }
+
+    /* "new" tag — shown under the date for entries under 3 days old */
+    .blog-new-tag {
+      display: block;
+      height: 1.2vw;
+      width: auto;
+      margin-top: 0.4vw;
+      image-rendering: pixelated;
+    }
+
+    /* pixel sprite dropped inline after a word in body copy */
+    .blog-inline-gif {
+      display: inline-block;
+      height: 1.2em;
+      width: auto;
+      /* negative top/bottom margins keep the gif from stretching the line box */
+      margin: -1em 0.2em;
+      vertical-align: middle;
+      image-rendering: pixelated;
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <main>
+    <!-- Newest entry on top. To add one, paste a copy of a <tr> block directly below this line. -->
+    <table class="blog-table">
+      <tbody>
+        <tr>
+          <td class="blog-date-cell"><p class="blog-header">November 3, 2026</p></td>
+          <td class="blog-entry-cell">
+            <p class="blog-body">12:22 am</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="blog-date-cell"><p class="blog-header">September 1, 2026</p></td>
+          <td class="blog-entry-cell">
+            <div class="blog-cols">
+              <p class="blog-body">Sail away<br><br>The heart knows when it is time for progress.<br>Your inner wisdom knows what to leave behind and the important things to take with you.<br><br><em>"I am free to move on with peace."</em></p>
+              <pre class="blog-ascii">         /|\
+       /__| )
+     /____| ))
+   /______| )))
+ /________|  )))
+         _|____))
+ \======| o o /
+~~~~~~~~~~~~~~~~~~~</pre>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blog-date-cell"><p class="blog-header">August 28, 2026</p></td>
+          <td class="blog-entry-cell">
+            <p class="blog-body">Whenever I design and build a website, I can't stop. It may be my favorite form of design. I think about design vs. art a lot, and how the two are not seen as antitheses of each other enough.<br><br>The hardest thing about making art is thinking that it is as structured as design. The hardest thing about design is thinking that it is as creative as art. And honestly, I'm more of a hardwired designer than I am an artist, so making art soothes me because I use my brain in a way that is completely different than what I'm used to. I hope that kind of thinking becomes more natural to me so I can challenge myself further…</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="blog-date-cell"><p class="blog-header">August 27, 2026</p></td>
+          <td class="blog-entry-cell">
+            <p class="blog-body">Today I added this blog<img class="blog-inline-gif" src="assets/write.gif" alt=""> to the website. I'm pretty interested in how it might grow<img class="blog-inline-gif" src="assets/pixel/grow.webp" alt=""> to my needs in the future. I could see myself just adding tiny quality-of-life improvments over time. Eventually, it'd be pretty different from this initial version.</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="blog-date-cell"><p class="blog-header">August 18, 2026</p></td>
+          <td class="blog-entry-cell">
+            <p class="blog-body">Today, I went to the department store after work, to purchase a Baby-G watch. After a long and hard work day, going on this venture made me feel like a proper salarywoman. Getting off at the Union Square stop and walking through the tall buildings made me feel like I was in Ginza for a second. My new watch is black with a pink panel, and has a pixel dog, cat, or dolphin that shows up when you press the watch. I can't help but wonder how many other women find solace in the subtle playfulness of the everyday accessory. Now, when I have a rough moment at work, I find myself pressing the watch just to see my pixel cuties.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    // show a "new" tag under any entry dated within the last 3 days
+    (function () {
+      var THRESHOLD_DAYS = 7;
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      document.querySelectorAll('.blog-header').forEach(function (h) {
+        var d = new Date(h.textContent.trim());
+        if (isNaN(d)) return;
+        d.setHours(0, 0, 0, 0);
+
+        var diffDays = Math.round((today - d) / 86400000);
+        if (diffDays >= 0 && diffDays < THRESHOLD_DAYS) {
+          var img = document.createElement('img');
+          img.className = 'blog-new-tag';
+          img.src = 'assets/pixel/new-tag-4.gif';
+          img.alt = 'new';
+          h.insertAdjacentElement('afterend', img);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

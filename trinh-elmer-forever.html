@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>trinh &amp; elmer forever — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* photos render smooth; only gifs and tiled backgrounds stay pixelated */
+    img:not([src$=".gif"]) {
+      image-rendering: auto;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+      background-image: url('assets/my-photos/trinh-elmer-bg.gif');
+      background-repeat: repeat;
+      background-size: 100px 120px;
+      background-attachment: fixed;
+      image-rendering: pixelated;
+    }
+
+    nav {
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: 1.67vw;
+      row-gap: 6.68vw; /* 4x */
+      padding: 1.67vw;
+      align-items: start;
+    }
+
+    main img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .album-title {
+      text-align: center;
+      font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-variation-settings: 'wght' 300;
+      font-size: 1.25vw;
+      color: #000;
+      line-height: 1.25;
+      padding: 1.67vw 1.67vw 0 calc(20vw + 1.67vw);
+    }
+
+    @media (max-width: 1919px) {
+      .album-title {
+        font-size: 1.67vw;
+      }
+    }
+
+    @media (min-width: 1920px) {
+      .album-title {
+        padding-left: calc(15vw + 1.67vw);
+      }
+    }
+
+    .te-photo {
+      grid-column: 4 / 10;
+    }
+
+    .te-wide {
+      grid-column: 2 / 12;
+    }
+
+    .te-med {
+      grid-column: 3 / 11;
+    }
+
+    /* ============================================================
+       TEMP layout editor — press H to toggle. Drag an image to
+       move / reorder it; drag its blue corner to change how many
+       columns wide it is. Live values show in the panel bottom-right.
+       Delete this style block, the .grid-overlay div, and the
+       trailing editor script when done, then bake the values into
+       the .te-* classes above.
+       ============================================================ */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 20vw;
+      width: 80vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.67vw;
+      padding: 0 1.67vw;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    @media (min-width: 1920px) {
+      .grid-overlay {
+        left: 15vw;
+        width: 85vw;
+      }
+    }
+
+    .grid-overlay-col {
+      background: rgba(0, 100, 255, 0.07);
+    }
+
+    .te-item {
+      position: relative;
+    }
+
+    body.edit-mode .te-item {
+      outline: 1px dashed rgba(0, 0, 255, 0.5);
+      cursor: grab;
+      touch-action: none;
+    }
+
+    body.edit-mode .te-item.dragging {
+      cursor: grabbing;
+      opacity: 0.85;
+    }
+
+    .te-resize {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: rgba(0, 0, 255, 0.45);
+      cursor: ew-resize;
+      z-index: 6;
+      display: none;
+    }
+
+    .te-resize.l { left: -7px; }
+    .te-resize.r { right: -7px; }
+
+    body.edit-mode .te-resize {
+      display: block;
+    }
+
+    .te-badge {
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #0000ff;
+      color: #fff;
+      font: 11px/1.4 monospace;
+      padding: 1px 4px;
+      z-index: 6;
+      pointer-events: none;
+      display: none;
+    }
+
+    body.edit-mode .te-badge {
+      display: block;
+    }
+
+    .dnd-readout {
+      position: fixed;
+      right: 8px;
+      bottom: 44px;
+      max-height: 40vh;
+      overflow: auto;
+      background: #000;
+      color: #0f0;
+      font: 11px/1.5 monospace;
+      padding: 8px;
+      z-index: 9999;
+      white-space: pre;
+      display: none;
+    }
+
+    .dnd-save {
+      position: fixed;
+      right: 8px;
+      bottom: 8px;
+      z-index: 9999;
+      background: #0000ff;
+      color: #fff;
+      border: none;
+      font: 12px/1 monospace;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .dnd-saveout {
+      position: fixed;
+      left: 8px;
+      bottom: 8px;
+      width: 40vw;
+      height: 30vh;
+      z-index: 9999;
+      font: 11px/1.4 monospace;
+      display: none;
+    }
+
+    body.edit-mode .dnd-readout,
+    body.edit-mode .dnd-save {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <div class="grid-overlay" style="display:none;">
+    <div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div>
+  </div>
+  <h1 class="album-title">Trinh &amp; Elmer forever</h1>
+  <main>
+    <img src="assets/my-photos/elmer-trinh-clear.png" style="grid-column: 1 / 7;" alt="">
+    <img src="assets/my-photos/te/portrait.jpg" style="grid-column: 7 / 13;" alt="">
+    <img src="assets/my-photos/te/wed-3.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/wed-7.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/wed-8.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/wed-9.jpg" style="grid-column: 3 / 11;" alt="">
+    <img src="assets/my-photos/te/hands.gif" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/kari-1.jpg" style="grid-column: 3 / 11;" alt="">
+    <img src="assets/my-photos/te/kari-3.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/kari-4.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/kari-5.jpg" style="grid-column: 3 / 11;" alt="">
+    <img src="assets/my-photos/te/kari-7.jpg" style="grid-column: 1 / 7;" alt="">
+    <img src="assets/my-photos/te/kari-8.jpg" style="grid-column: 7 / 13;" alt="">
+    <img src="assets/my-photos/te/blog-2.gif" style="grid-column: 3 / 11;" alt="">
+    <img src="assets/my-photos/te/kari-2.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/kari-9.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/kari-10.jpg" style="grid-column: 3 / 11;" alt="">
+    <img src="assets/my-photos/te/wed-6.jpg" style="grid-column: 2 / 12;" alt="">
+    <img src="assets/my-photos/te/flowers.jpg" style="grid-column: 1 / 7;" alt="">
+    <img src="assets/my-photos/te/img-1069.jpg" style="grid-column: 7 / 13;" alt="">
+    <img src="assets/my-photos/te/blog-3.gif" style="grid-column: 4 / 10;" alt="">
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+  /* TEMP layout editor — remove along with the matching <style> block + .grid-overlay div */
+  (function () {
+    const main = document.querySelector('main');
+    const overlay = document.querySelector('.grid-overlay');
+    const GAP_VW = 1.67;
+
+    // wrap each grid image so it can carry a resize handle + a badge
+    const items = [];
+    [...main.querySelectorAll(':scope > img')].forEach(img => {
+      const w = document.createElement('div');
+      w.className = 'te-item';
+      ['te-photo', 'te-wide', 'te-med'].forEach(c => {
+        if (img.classList.contains(c)) { w.classList.add(c); img.classList.remove(c); }
+      });
+      if (img.style.gridColumn) { w.style.gridColumn = img.style.gridColumn; img.style.gridColumn = ''; }
+      img.parentNode.insertBefore(w, img);
+      w.appendChild(img);
+      const badge = document.createElement('div'); badge.className = 'te-badge'; w.appendChild(badge);
+      const hL = document.createElement('div'); hL.className = 'te-resize l'; w.appendChild(hL);
+      const hR = document.createElement('div'); hR.className = 'te-resize r'; w.appendChild(hR);
+      w._img = img; w._badge = badge; w._hL = hL; w._hR = hR;
+      items.push(w);
+    });
+
+    const readout = document.createElement('div');
+    readout.className = 'dnd-readout';
+    document.body.appendChild(readout);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'button';
+    saveBtn.className = 'dnd-save';
+    saveBtn.textContent = 'Save layout → copy <main> markup';
+    document.body.appendChild(saveBtn);
+
+    const saveOut = document.createElement('textarea');
+    saveOut.className = 'dnd-saveout';
+    saveOut.readOnly = true;
+    document.body.appendChild(saveOut);
+
+    function buildMarkup() {
+      let out = '  <main>\n';
+      items.forEach(w => {
+        const [a, b] = getSpan(w);
+        const src = w._img.getAttribute('src');
+        out += '    <img src="' + src + '" style="grid-column: ' + a + ' / ' + b + ';" alt="">\n';
+      });
+      out += '  </main>';
+      return out;
+    }
+
+    saveBtn.addEventListener('click', () => {
+      const markup = buildMarkup();
+      saveOut.value = markup;
+      saveOut.style.display = 'block';
+      saveOut.select();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(markup)
+          .then(() => { saveBtn.textContent = 'Copied ✓ — paste over <main>, then delete the editor'; })
+          .catch(() => { saveBtn.textContent = 'Select the box below & copy manually'; });
+      } else {
+        saveBtn.textContent = 'Select the box below & copy manually';
+      }
+    });
+
+    function metrics() {
+      const cs = getComputedStyle(main);
+      const r = main.getBoundingClientRect();
+      const padL = parseFloat(cs.paddingLeft);
+      const padR = parseFloat(cs.paddingRight);
+      const contentLeft = r.left + padL;
+      const contentW = r.width - padL - padR;
+      const gap = window.innerWidth * GAP_VW / 100;
+      const colW = (contentW - 11 * gap) / 12;
+      return { contentLeft, gap, colW };
+    }
+
+    function xToLine(x) {
+      const { contentLeft, gap, colW } = metrics();
+      let line = Math.round((x - contentLeft) / (colW + gap)) + 1;
+      return Math.max(1, Math.min(13, line));
+    }
+
+    function getSpan(w) {
+      const m = (w.style.gridColumn || '').match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) return [+m[1], +m[2]];
+      if (w.classList.contains('te-photo')) return [4, 10];
+      if (w.classList.contains('te-wide')) return [2, 12];
+      if (w.classList.contains('te-med')) return [3, 11];
+      return [1, 13];
+    }
+
+    function setSpan(w, a, b) {
+      a = Math.max(1, Math.min(12, a));
+      b = Math.max(a + 1, Math.min(13, b));
+      w.style.gridColumn = a + ' / ' + b;
+      refresh();
+    }
+
+    function refresh() {
+      let text = 'H = toggle  •  drag body = move/reorder  •  drag L/R blue bars = width\n' +
+                 '[  ]  narrow / widen hovered item   ,  .  nudge it left / right\n\n';
+      items.forEach((w, i) => {
+        const [a, b] = getSpan(w);
+        w._badge.textContent = a + ' / ' + b;
+        const name = w._img.getAttribute('src').split('/').pop();
+        text += String(i).padStart(2) + '  ' + (a + ' / ' + b).padEnd(9) + name + '\n';
+      });
+      readout.textContent = text;
+    }
+
+    let edit = false;
+    let hovered = null;
+    document.addEventListener('keydown', e => {
+      if (e.key === 'h' || e.key === 'H') {
+        edit = !edit;
+        document.body.classList.toggle('edit-mode', edit);
+        overlay.style.display = edit ? 'grid' : 'none';
+        if (edit) refresh();
+        return;
+      }
+      if (!edit || !hovered) return;
+      const [a, b] = getSpan(hovered);
+      const wdt = b - a;
+      if (e.key === ']') setSpan(hovered, a, b + 1);
+      else if (e.key === '[') setSpan(hovered, a, b - 1);
+      else if (e.key === '.') { const na = Math.min(13 - wdt, a + 1); setSpan(hovered, na, na + wdt); }
+      else if (e.key === ',') { const na = Math.max(1, a - 1); setSpan(hovered, na, na + wdt); }
+    });
+
+    let target = null, mode = null, startSpan = null, grabLine = 1;
+
+    items.forEach(w => {
+      w.addEventListener('pointerdown', e => {
+        if (!edit) return;
+        target = w;
+        startSpan = getSpan(w);
+        grabLine = xToLine(e.clientX);
+        if (e.target === w._hL) mode = 'resize-l';
+        else if (e.target === w._hR) mode = 'resize-r';
+        else { mode = 'move'; w.classList.add('dragging'); }
+        w.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+
+      w.addEventListener('pointermove', e => {
+        if (target !== w) return;
+        if (mode === 'resize-r') {
+          setSpan(w, startSpan[0], xToLine(e.clientX));
+          return;
+        }
+        if (mode === 'resize-l') {
+          setSpan(w, xToLine(e.clientX), startSpan[1]);
+          return;
+        }
+
+        // horizontal: shift start column by however many columns the cursor moved
+        const width = startSpan[1] - startSpan[0];
+        const delta = xToLine(e.clientX) - grabLine;
+        const start = Math.max(1, Math.min(13 - width, startSpan[0] + delta));
+        setSpan(w, start, start + width);
+
+        // vertical reorder: find the first live sibling whose midpoint is below
+        // the cursor and drop before it; hysteresis (0.35 of row height) keeps
+        // it from flip-flopping when the cursor hovers a boundary
+        const sibs = [...main.children].filter(c => c !== w && c.classList.contains('te-item'));
+        const y = e.clientY;
+        let before = null;
+        for (const s of sibs) {
+          const r = s.getBoundingClientRect();
+          const band = r.height * 0.35;
+          if (y < r.top + r.height / 2 - band) { before = s; break; }
+          if (y < r.top + r.height / 2 + band) { before = undefined; break; } // in the deadzone — leave it
+        }
+        if (before === undefined) return;
+        if (before) {
+          if (w.nextElementSibling !== before) main.insertBefore(w, before);
+        } else if (main.lastElementChild !== w) {
+          main.appendChild(w);
+        }
+      });
+
+      w.addEventListener('pointerup', () => {
+        if (target !== w) return;
+        w.classList.remove('dragging');
+        target = null; mode = null;
+        items.sort((a, b) =>
+          (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
+        refresh();
+      });
+
+      w.addEventListener('pointerenter', () => { if (edit) hovered = w; });
+      w.addEventListener('pointerleave', () => { if (hovered === w) hovered = null; });
+    });
+
+    window.addEventListener('resize', () => { if (edit) refresh(); });
+  })();
+  </script>
+</body>
+</html>

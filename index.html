@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <script>
+    window.FALLING_PARTICLE_IMAGES = ['assets/diary-particle.gif'];
+    /* match nav icon sizing: 1.5vw below 1920px, 1.25vw at/above */
+    window.FALLING_PARTICLE_SIZE_VW = 1.5;
+    window.FALLING_PARTICLE_SIZE_VW_WIDE = 1.25;
+    window.FALLING_PARTICLE_COUNT = 75;
+    window.FALLING_PARTICLE_PIXELATED = true;
+    window.FALLING_PARTICLE_OPACITY = 1;
+  </script>
+  <script src="assets/falling-particles.js?v=3" defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    main {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.67vw;
+      overflow: hidden;
+    }
+
+    .home-photo {
+      display: block;
+      width: 30vw;
+      height: auto;
+      border: 1px solid #000;
+    }
+
+    .home-draggable {
+      position: absolute;
+      width: 10vw;
+      height: auto;
+      image-rendering: pixelated;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .home-draggable.dragging {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <main>
+    <img class="home-photo" src="assets/home-photo.jpg" alt="">
+    <img class="home-draggable" id="home-draggable" src="assets/home-draggable.gif" alt="" draggable="false">
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    // draggable gif, constrained to <main> (never over the nav)
+    (function () {
+      const el = document.getElementById('home-draggable');
+      const container = document.querySelector('main');
+      let dragging = false;
+      let offsetX = 0, offsetY = 0;
+
+      function place(x, y) {
+        const maxX = container.clientWidth - el.offsetWidth;
+        const maxY = container.clientHeight - el.offsetHeight;
+        el.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+        el.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+      }
+
+      // start centered-ish, offset from the photo
+      window.addEventListener('load', () => {
+        place(container.clientWidth * 0.68, container.clientHeight * 0.62);
+      });
+
+      el.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        el.classList.add('dragging');
+        el.setPointerCapture(e.pointerId);
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const cRect = container.getBoundingClientRect();
+        place(e.clientX - cRect.left - offsetX, e.clientY - cRect.top - offsetY);
+      });
+
+      function stop() {
+        dragging = false;
+        el.classList.remove('dragging');
+      }
+      el.addEventListener('pointerup', stop);
+      el.addEventListener('pointercancel', stop);
+    })();
+  </script>
+</body>
+</html>

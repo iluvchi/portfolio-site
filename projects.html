@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>projects — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* logos/photos render smooth; only gifs and tiled backgrounds stay pixelated */
+    img:not([src$=".gif"]) {
+      image-rendering: auto;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+      background-image: url('assets/blog-grid-bg.gif');
+      background-repeat: repeat;
+      background-size: 100px 100px;
+      background-attachment: fixed;
+      image-rendering: pixelated;
+    }
+
+    main {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* draggable desktop-style icon */
+    .desktop-icon {
+      position: absolute;
+      width: 5.5vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .desktop-icon.dragging {
+      cursor: grabbing;
+    }
+
+    .desktop-icon.large {
+      width: 7.5vw;
+    }
+
+    @keyframes logo-flip {
+      0%   { transform: scaleX(1); }
+      25%  { transform: scaleX(0); }
+      50%  { transform: scaleX(-1); }
+      75%  { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+
+    .desktop-icon-logo {
+      width: 60%;
+      height: auto;
+      animation: logo-flip 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .desktop-icon-logo.no-spin {
+      animation: none;
+    }
+
+    .desktop-icon-label {
+      width: 6.5vw;
+      margin-top: 0.5vw;
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+      font-size: 0.73vw;
+      color: #000;
+      text-align: center;
+      line-height: 1.25;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1919px) {
+      .desktop-icon-label {
+        font-size: 0.97vw;
+      }
+    }
+
+    .project-head {
+      position: absolute;
+      top: 2vw;
+      left: 2vw;
+    }
+
+    /* page header — same size as the links */
+    .page-title {
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+      font-size: 1.25vw;
+      color: #000;
+      display: flex;
+    }
+
+    .page-title span {
+      display: inline-block;
+      transform: rotate(15deg);
+      letter-spacing: 0.05vw;
+      margin-right: 0.02vw;
+    }
+
+    @media (max-width: 1919px) {
+      .page-title {
+        font-size: 1.67vw;
+      }
+    }
+
+    /* project links column + collaborations column, side by side */
+    .links-row {
+      position: relative;
+      display: flex;
+    }
+
+    /* stacked project links */
+    .project-links {
+      margin-top: 0.83vw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.83vw;
+    }
+
+    /* taken out of flow and positioned via JS, so hovering the toggle word
+       (which widens it) never shifts this column */
+    .sub-links {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-top: 0;
+      display: none;
+    }
+
+    .sub-links.open {
+      display: flex;
+    }
+
+    .project-links a {
+      display: flex;
+      font-family: 'ABC Favorit Lining Edu Light', sans-serif;
+      font-size: 1.25vw;
+      color: #000;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .project-links a span {
+      display: inline-block;
+    }
+
+    /* letters of the toggle word itself still lay out (and rotate on hover)
+       exactly like every other link */
+    .project-links a .link-word {
+      display: flex;
+    }
+
+    /* the [+]/[-] indicator — always the non-underlined font, at rest and on hover */
+    .link-plus {
+      margin-left: 0.2em;
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+    }
+
+    /* icon hangs to the left of the link — link text stays at the same left
+       edge as every other row, icon or not */
+    .edition-item {
+      position: relative;
+    }
+
+    .edition-key {
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      margin-right: 0.4vw;
+      transform: translateY(-50%);
+      height: 1vw;
+      width: auto;
+      image-rendering: pixelated;
+    }
+
+    @media (max-width: 1919px) {
+      .edition-key {
+        height: 1.2vw;
+        margin-right: 0.4vw;
+      }
+    }
+
+    /* unicode divider — same technique as .about-divider. starts flush with
+       the link text's own left edge; sizeEditionDivider() sets its width to
+       match the longest link so the right edge lines up too */
+    .edition-divider {
+      overflow: hidden;
+      white-space: nowrap;
+      min-width: 0; /* otherwise its unclipped ::before content inflates the
+                       shrink-to-fit width of #editions-links itself */
+      /* #editions-links' own flex gap (0.83vw) already adds space above and
+         below; the extra 0.42vw brings the total to 1.25vw */
+      margin-top: 0.42vw;
+      margin-bottom: 0.42vw;
+      color: #000;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-size: 0.83vw;
+      line-height: 1.25;
+    }
+
+    .edition-divider::before {
+      content: '✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎ ✳︎';
+    }
+
+    @media (max-width: 1919px) {
+      .edition-divider {
+        font-size: 1.11vw;
+      }
+    }
+
+    /* legend explaining what the key icon means — reuses .edition-item's
+       hanging-icon alignment so its key lines up with the ones above it */
+    .edition-legend {
+      /* spacing above comes from #editions-links' own flex gap now that the
+         divider sits between it and the last link — no extra margin needed */
+    }
+
+    .edition-legend-text {
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+      font-style: italic;
+      font-size: 0.83vw;
+      color: #000;
+      line-height: 1;
+    }
+
+    /* only "KaleidoscopeStore" links out — underlined font, same external-link
+       arrow treatment as "instagram" in the nav. display:inline-block overrides
+       the inherited display:flex from .project-links a, which is block-level
+       and was forcing a line break before this link */
+    .project-links a.edition-legend-brand {
+      display: inline-block;
+      font-family: 'ABC Favorit Lining Edu Light', sans-serif;
+      font-style: italic;
+      font-size: 0.83vw;
+      color: #000;
+      text-decoration: none;
+    }
+
+    /* "KaleidoscopeStore" is a plain text node (not letter-split), so it needs
+       its own hover rule to swap font like every other link does */
+    .project-links a.edition-legend-brand:hover {
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+    }
+
+    @media (max-width: 1919px) {
+      .edition-legend-text,
+      .project-links a.edition-legend-brand {
+        font-size: 1.11vw;
+      }
+    }
+
+    .project-links a:hover span {
+      font-family: 'ABC Favorit Edu Light', sans-serif;
+    }
+
+    @media (max-width: 1919px) {
+      .project-links a {
+        font-size: 1.67vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <main>
+    <div class="project-head">
+      <div class="page-title" id="page-title">Projects</div>
+      <div class="links-row">
+        <div class="project-links">
+          <a href="illustration.html">Illustration</a>
+          <a href="sculpture.html">Sculpture</a>
+          <a href="textiles.html">Textiles</a>
+          <a href="baking.html">Baking</a>
+          <a href="#collaborations" id="collaborations-toggle"><span class="link-word">Collaborations</span><span class="link-plus">[+]</span></a>
+          <a href="#editions" id="editions-toggle"><span class="link-word">Editions</span><span class="link-plus">[+]</span></a>
+        </div>
+        <div class="project-links sub-links" id="collab-links">
+          <a href="coyseio.html">COYSEIO x Kiko Mizuhara</a>
+          <a href="lace.html">acne - lace & Chestnut Bakery</a>
+          <a href="have-fun-reading-with-kaleidoscopestore.html">Have Fun Reading with KaleidoscopeStore</a>
+        </div>
+        <div class="project-links sub-links" id="editions-links">
+          <div class="edition-item">
+            <img class="edition-key" src="assets/pixel/key2.gif" alt="Produced with KaleidoscopeStore" title="Produced with KaleidoscopeStore">
+            <a href="i-see-the-world.html">I see the world</a>
+          </div>
+          <a href="sweet-and-soft-summer.html">sweet and soft summer</a>
+          <div class="edition-item">
+            <img class="edition-key" src="assets/pixel/key2.gif" alt="Produced with KaleidoscopeStore" title="Produced with KaleidoscopeStore">
+            <a href="my-winter-memory-will-stay.html">My Winter Memory Will Stay</a>
+          </div>
+          <div class="edition-item">
+            <img class="edition-key" src="assets/pixel/key2.gif" alt="Produced with KaleidoscopeStore" title="Produced with KaleidoscopeStore">
+            <a href="summer-shortbread-cookies.html">Summer shortbread cookies</a>
+          </div>
+          <div class="edition-divider"></div>
+          <div class="edition-item edition-legend">
+            <img class="edition-key" src="assets/pixel/key2.gif" alt="">
+            <span class="edition-legend-text">Produced with <a class="edition-legend-brand" href="https://www.instagram.com/kaleidoscopestore__official/" target="_blank">KaleidoscopeStore</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="desktop-icon large" id="isee-icon" data-href="i-see-the-world.html">
+      <img class="desktop-icon-logo no-spin" src="assets/i-see-the-world-logo.png" alt="">
+      <p class="desktop-icon-label">I see the world</p>
+    </div>
+    <div class="desktop-icon" id="coyseio-icon" data-href="coyseio.html">
+      <img class="desktop-icon-logo" src="assets/coyseio-logo.png" alt="">
+      <p class="desktop-icon-label">COYSEIO x Kiko Mizuhara</p>
+    </div>
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    const title = document.getElementById('page-title');
+    title.innerHTML = title.textContent.split('').map(l =>
+      l === ' ' ? `<span style="display:inline-block;transform:none;width:0.2em;">&nbsp;</span>` : `<span>${l}</span>`
+    ).join('');
+
+    // split each project link into per-letter spans, so hover can tilt them —
+    // if a link has a .link-word (the toggles), only that part gets split, so
+    // the [+]/[-] indicator next to it is untouched
+    document.querySelectorAll('.project-links a:not(.edition-legend-brand)').forEach(a => {
+      const wordEl = a.querySelector(':scope > .link-word') || a;
+      wordEl.innerHTML = wordEl.textContent.split('').map(l =>
+        l === ' ' ? `<span style="width:0.2em;">&nbsp;</span>` : `<span>${l}</span>`
+      ).join('');
+    });
+
+    // "Collaborations" / "Editions" each open a second link column in place —
+    // no page navigation, so the desktop icons (and any dragged position) never reset
+    const linksRow = document.querySelector('.links-row');
+    const firstCol = document.querySelector('.links-row > .project-links:not(.sub-links)');
+    const SUB_LINKS_GAP_VW = 3;
+
+    const subLinkPanels = [
+      { hash: '#collaborations', toggle: document.getElementById('collaborations-toggle'), panel: document.getElementById('collab-links') },
+      { hash: '#editions',       toggle: document.getElementById('editions-toggle'),       panel: document.getElementById('editions-links') }
+    ];
+
+    // width of the first column at rest — measured off-screen so a real, live
+    // hover on the toggle word (which widens it) never leaks into this
+    function measureFirstColWidth() {
+      const clone = firstCol.cloneNode(true);
+      clone.style.position = 'absolute';
+      clone.style.visibility = 'hidden';
+      clone.style.left = '-9999px';
+      clone.style.top = '0';
+      document.body.appendChild(clone);
+      const width = clone.getBoundingClientRect().width;
+      document.body.removeChild(clone);
+      return width;
+    }
+
+    // line up a sub-links panel's first link with its toggle row
+    function alignSubLinks(entry) {
+      const rowRect = linksRow.getBoundingClientRect();
+      const toggleRect = entry.toggle.getBoundingClientRect();
+      entry.panel.style.top = (toggleRect.top - rowRect.top) + 'px';
+      entry.panel.style.left = (measureFirstColWidth() + window.innerWidth * SUB_LINKS_GAP_VW / 100) + 'px';
+    }
+
+    // the divider's ::before content is long so it always has something to
+    // clip, but that means its rendered width has to be set explicitly.
+    // every .project-links a is display:flex (block-level), so it stretches
+    // to fill #editions-links' own width rather than hugging its text —
+    // measuring it live just returns that same inflated container width, not
+    // the actual text length. cloning off-screen with inline-flex forces
+    // shrink-to-fit sizing so we get the real width instead — but the clone
+    // needs a .project-links ancestor wrapper, or the ".project-links a"
+    // selector no longer matches it and it measures with no styling at all.
+    function sizeEditionDivider() {
+      const divider = document.querySelector('#editions-links .edition-divider');
+      if (!divider) return;
+      let maxWidth = 0;
+      document.querySelectorAll('#editions-links a').forEach(a => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'project-links';
+        wrapper.style.position = 'absolute';
+        wrapper.style.visibility = 'hidden';
+        wrapper.style.left = '-9999px';
+        wrapper.style.top = '0';
+        const clone = a.cloneNode(true);
+        clone.style.display = 'inline-flex';
+        wrapper.appendChild(clone);
+        document.body.appendChild(wrapper);
+        maxWidth = Math.max(maxWidth, clone.getBoundingClientRect().width);
+        document.body.removeChild(wrapper);
+      });
+      // starts at the text's own left edge, so no icon-position offset needed
+      const targetWidth = maxWidth;
+
+      // round down to a whole number of "✳︎ " units, so overflow:hidden
+      // always cuts between stars instead of through the middle of one
+      const unit = document.createElement('span');
+      unit.style.position = 'absolute';
+      unit.style.visibility = 'hidden';
+      unit.style.whiteSpace = 'pre';
+      unit.style.fontFamily = getComputedStyle(divider).fontFamily;
+      unit.style.fontSize = getComputedStyle(divider).fontSize;
+      unit.textContent = '✳︎ ';
+      document.body.appendChild(unit);
+      const unitWidth = unit.getBoundingClientRect().width;
+      document.body.removeChild(unit);
+
+      const wholeUnits = Math.max(1, Math.ceil(targetWidth / unitWidth));
+      divider.style.width = (wholeUnits * unitWidth) + 'px';
+    }
+
+    function syncSubLinks() {
+      subLinkPanels.forEach(entry => {
+        const open = window.location.hash === entry.hash;
+        entry.panel.classList.toggle('open', open);
+        const plus = entry.toggle.querySelector('.link-plus');
+        if (plus) plus.textContent = open ? '[–]' : '[+]';
+        if (open) alignSubLinks(entry);
+      });
+      if (window.location.hash === '#editions') sizeEditionDivider();
+    }
+    syncSubLinks();
+    window.addEventListener('hashchange', syncSubLinks);
+    window.addEventListener('resize', () => {
+      subLinkPanels.forEach(entry => {
+        if (entry.panel.classList.contains('open')) alignSubLinks(entry);
+      });
+      if (window.location.hash === '#editions') sizeEditionDivider();
+    });
+
+    // clicking an already-open toggle collapses it — its href only ever sets
+    // the hash, so a repeat click needs to explicitly clear it to close
+    subLinkPanels.forEach(entry => {
+      entry.toggle.addEventListener('click', (e) => {
+        if (window.location.hash === entry.hash) {
+          e.preventDefault();
+          history.pushState(null, '', window.location.pathname + window.location.search);
+          syncSubLinks();
+        }
+      });
+    });
+
+    // draggable desktop icons, constrained to <main> — click (no drag) opens the project
+    // dragged position is remembered per tab (sessionStorage), so it survives navigating
+    // away to a project sub-page and back, not just the in-page Collaborations toggle
+    const desktopIcons = document.querySelectorAll('.desktop-icon');
+    desktopIcons.forEach((el, i) => {
+      const container = document.querySelector('main');
+      const DRAG_THRESHOLD = 3; // px of movement before it counts as a drag, not a click
+      const storageKey = 'projects-icon-pos:' + el.id;
+      let dragging = false;
+      let moved = false;
+      let offsetX = 0, offsetY = 0;
+      let startX = 0, startY = 0;
+
+      function place(x, y, remember) {
+        const maxX = container.clientWidth - el.offsetWidth;
+        const maxY = container.clientHeight - el.offsetHeight;
+        const clampedX = Math.max(0, Math.min(x, maxX));
+        const clampedY = Math.max(0, Math.min(y, maxY));
+        el.style.left = clampedX + 'px';
+        el.style.top = clampedY + 'px';
+        if (remember) {
+          try {
+            sessionStorage.setItem(storageKey, JSON.stringify({
+              x: maxX > 0 ? clampedX / maxX : 0,
+              y: maxY > 0 ? clampedY / maxY : 0
+            }));
+          } catch (e) {}
+        }
+      }
+
+      window.addEventListener('load', () => {
+        let saved = null;
+        try {
+          const raw = sessionStorage.getItem(storageKey);
+          if (raw) saved = JSON.parse(raw);
+        } catch (e) {}
+
+        if (saved) {
+          const maxX = container.clientWidth - el.offsetWidth;
+          const maxY = container.clientHeight - el.offsetHeight;
+          place(saved.x * maxX, saved.y * maxY, false);
+        } else {
+          const pad = window.innerWidth * 0.02; // 2vw, matches .project-head's inset
+
+          // center every icon on a shared vertical axis, set by the widest one,
+          // so narrower icons (e.g. coyseio) align to the middle of the group
+          // rather than each icon separately hugging the right edge
+          let maxIconWidth = 0;
+          desktopIcons.forEach(ic => { maxIconWidth = Math.max(maxIconWidth, ic.offsetWidth); });
+          const groupLeft = container.clientWidth - pad - maxIconWidth;
+          const x = groupLeft + (maxIconWidth - el.offsetWidth) / 2;
+
+          let y = pad;
+          for (let j = 0; j < i; j++) {
+            y += desktopIcons[j].offsetHeight + pad;
+          }
+          place(x, y, false);
+        }
+      });
+
+      el.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        moved = false;
+        el.classList.add('dragging');
+        el.setPointerCapture(e.pointerId);
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        startX = e.clientX;
+        startY = e.clientY;
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        if (!moved && Math.hypot(e.clientX - startX, e.clientY - startY) > DRAG_THRESHOLD) {
+          moved = true;
+        }
+        const cRect = container.getBoundingClientRect();
+        place(e.clientX - cRect.left - offsetX, e.clientY - cRect.top - offsetY, true);
+      });
+
+      function stop() {
+        dragging = false;
+        el.classList.remove('dragging');
+      }
+      el.addEventListener('pointerup', (e) => {
+        stop();
+        if (!moved) window.location.href = el.dataset.href;
+      });
+      el.addEventListener('pointercancel', stop);
+    });
+  </script>
+</body>
+</html>

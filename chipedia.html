@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chipedia — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* photos render smooth; only gifs and tiled backgrounds stay pixelated */
+    img:not([src$=".gif"]) {
+      image-rendering: auto;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    nav {
+      background-color: #ffffff;
+    }
+
+    /* page-scoped: white hover instead of the shared teal */
+    .nav-link:hover,
+    .nav-group:hover .nav-group-text {
+      background-color: #ffffff;
+    }
+
+    /* overflow:hidden so main's own height contains the floated infobox
+       (otherwise a block formatting context wouldn't count its height) */
+    main {
+      padding: 1.67vw;
+      overflow: hidden;
+    }
+
+    .chi-title {
+      font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-variation-settings: 'wght' 300;
+      font-size: 1.25vw; /* 24px */
+      color: #000;
+      line-height: 1;
+    }
+
+    @media (max-width: 1919px) {
+      .chi-title {
+        font-size: 1.67vw;
+      }
+    }
+
+    .chi-divider {
+      border: none;
+      border-top: 1px solid #000;
+      height: 0;
+      margin: 0.83vw 0 0;
+    }
+
+    .chi-body {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw; /* matches .about-body */
+      color: #000;
+      line-height: 1.25;
+      margin-top: 0.83vw;
+    }
+
+    @media (max-width: 1919px) {
+      .chi-body {
+        font-size: 0.97vw;
+      }
+    }
+
+    .chi-body-name {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 400;
+    }
+
+    /* wikipedia-style infobox — floated right so body text and section
+       headers wrap around it on their own, however much content there is,
+       instead of needing a manually-guessed grid-row span */
+    .chi-infobox {
+      float: right;
+      /* the last 4 of a 12-column grid: 4 columns + 3 internal gaps, sized
+         relative to main's own (already-padded) content width */
+      width: calc((100% - 11 * 1.67vw) / 12 * 4 + 3 * 1.67vw);
+      margin: 0.83vw 0 1.67vw 1.67vw;
+      border: 1px solid #000;
+      background-color: #ffffff;
+      /* 5% white veil over the tiled gif = ~95% opacity */
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)),
+        url('assets/my-chi-bg.gif');
+      background-repeat: no-repeat, repeat;
+      background-size: auto, 100px 100px;
+      image-rendering: pixelated;
+      padding: 0.83vw;
+    }
+
+    .chi-section {
+      font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-variation-settings: 'wght' 300;
+      font-size: 1.04vw; /* 20px */
+      color: #000;
+      line-height: 1;
+      margin-top: 1.67vw; /* page padding */
+    }
+
+    @media (max-width: 1919px) {
+      .chi-section {
+        font-size: 1.39vw;
+      }
+    }
+
+    .chi-section-divider {
+      border: none;
+      border-top: 1px solid #000;
+      height: 0;
+      margin: 0.83vw 0 1.67vw;
+    }
+
+    .chi-subsection {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 400;
+      font-size: 0.833vw; /* 16px */
+      color: #000;
+      line-height: 1;
+      margin-top: 1.67vw;
+      margin-bottom: 0.83vw;
+    }
+
+    @media (max-width: 1919px) {
+      .chi-subsection {
+        font-size: 1.11vw;
+      }
+    }
+
+    .chi-infobox-name {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 400;
+      font-size: 0.833vw; /* 16px */
+      color: #000;
+      text-align: center;
+      line-height: 1.25;
+      margin-bottom: 0.5vw;
+    }
+
+    @media (max-width: 1919px) {
+      .chi-infobox-name {
+        font-size: 1.11vw;
+      }
+    }
+
+    .chi-infobox-img {
+      display: block;
+      width: calc(100% - 1.66vw); /* extra 0.83vw each side, doubling the box's
+                                     own padding just for the image */
+      margin: 0 auto;
+      height: auto;
+    }
+
+    .chi-infobox-caption {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw; /* matches .about-body */
+      color: #000;
+      text-align: center;
+      line-height: 1.25;
+      margin-top: 0.4vw;
+    }
+
+    .chi-infobox-facts {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.83vw;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw; /* matches .about-body */
+      line-height: 1.4;
+      color: #000;
+    }
+
+    .chi-infobox-facts th {
+      text-align: left;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 400;
+      vertical-align: top;
+      white-space: nowrap;
+      padding: 0.3vw 0.5vw 0.3vw 0;
+    }
+
+    .chi-infobox-facts td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.3vw 0 0.3vw 0;
+    }
+
+    @media (max-width: 1919px) {
+      .chi-infobox-caption,
+      .chi-infobox-facts {
+        font-size: 0.97vw;
+      }
+    }
+
+    /* 12-column reference grid — toggle with the H key */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 20vw;
+      width: 80vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.67vw;
+      padding: 0 1.67vw;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .grid-overlay-col {
+      background: rgba(0, 100, 255, 0.07);
+    }
+
+    @media (min-width: 1920px) {
+      .grid-overlay {
+        left: 15vw;
+        width: 85vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <div class="grid-overlay" style="display:none;">
+    <div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div><div class="grid-overlay-col"></div>
+  </div>
+  <main>
+    <h1 class="chi-title">Chi</h1>
+    <hr class="chi-divider">
+    <aside class="chi-infobox">
+      <p class="chi-infobox-name">Chi</p>
+      <img class="chi-infobox-img" src="assets/chi-2025.jpg" alt="Chi in 2026">
+      <p class="chi-infobox-caption">Chi in 2026</p>
+      <table class="chi-infobox-facts">
+        <tr><th>Species</th><td>Cat (Felis catus)</td></tr>
+        <tr><th>Breed</th><td>Siamese mix</td></tr>
+        <tr><th>Sex</th><td>Female</td></tr>
+        <tr><th>Born</th><td>c. 2021–2022</td></tr>
+        <tr><th>Adopted</th><td>August 5, 2023</td></tr>
+        <tr><th>Other names</th><td>Chistopher • Cheesey weesey • Cheese • Cho • Samara</td></tr>
+        <tr><th>Occupation</th><td>Household pet<br>Studio cat</td></tr>
+        <tr><th>Signature</th><td></td></tr>
+      </table>
+    </aside>
+    <p class="chi-body"><span class="chi-body-name">Chi</span> (born c. 2021–2022) is an American Siamese-mix domestic cat. She was rescued in June 2023 after being found abandoned in Pittsburg, California, and was adopted on August 5, 2023. Following her adoption, she became a household pet and studio cat.</p>
+    <h2 class="chi-section">Early life and adoption</h2>
+    <hr class="chi-section-divider">
+    <p class="chi-body">Chi was “found abandoned looking for food in someone’s backyard in Pittsburgh [California] and was picked up by a Good Samaritan” in June 2023. She was subsequently taken in by Community Concern for Cats in Walnut Creek, where she received veterinary care, including various vaccinations and spaying. At the time, she weighed 7.5 pounds. Chi was fostered in a home with 35 other cats; however, as she was observed to do best when kept separate from other cats, she was housed separately. She was put up for adoption at the end of July 2023 and was adopted on August 5, 2023.</p>
+    <p class="chi-body">On the day of her adoption, Chi faced a wall and hid out of fear and stress at the adoption site. She was nonetheless adopted and taken to her new home in San Francisco.</p>
+    <h2 class="chi-section">Life in San Francisco</h2>
+    <hr class="chi-section-divider">
+    <p class="chi-body">Shortly after arriving at her new home in San Francisco, Chi hid out of fear. Her initial hiding spot was underneath the couch, but she was eventually moved to the bedroom, where she hid underneath the bed. On her second night, she came out briefly after being persuaded by Elmer, one of her new parents. She continued to hide for approximately a month, occasionally coming out at night or when lured out with toys. Trinh, her other parent, would spend hours talking to her while lying on the ground next to her underneath the bed. Over time, Chi became particularly attached to Trinh, who became her preferred person. Eventually, Chi warmed up to the entire apartment and began to make herself at home.</p>
+    <p class="chi-body">Chi was extremely underweight when she arrived in San Francisco. Initially, she barely ate, leading Trinh and Elmer to believe that she did not have a large appetite. They eventually learned that Chi has an abundant appetite, but does not eat when she is scared or stressed.</p>
+    <p class="chi-body">Chi has since lived in three different homes in San Francisco, all with her family. She runs up and down the stairs every day in her current home.</p>
+    <h2 class="chi-section">Personality and behavior</h2>
+    <hr class="chi-section-divider">
+    <p class="chi-body">Chi is a very silly, sweet, and sassy cat. She is shy when first meeting people and will often hide from unfamiliar visitors. Her willingness to remain visible upon meeting someone is considered an indication that she is comfortable with them, even if she is not yet affectionate. Chi is particularly wary of men and will generally hide when meeting them.</p>
+    <p class="chi-body">Chi is known for her affectionate behavior toward Trinh. Every night, she sleeps below the blankets in Trinh's arms, often in a position resembling that of a person. She frequently follows Trinh from room to room throughout the house. Chi is also considered highly intelligent. Trinh often sets up unconventional spots for Chi to lounge in and only needs to show her the spot once. Although Chi will not sit in a new spot immediately, she will typically begin using it shortly after its introduction and add it to her collection of preferred places to lounge.</p>
+    <p class="chi-body">Chi is also an athlete. She can play for hours on end, frequently leaping high into the air while playing. She particularly enjoys wand toys, which allow her to jump and chase them around the house.</p>
+    <h3 class="chi-subsection">Daily routine</h3>
+    <p class="chi-body">Chi is most vocal in the mornings, particularly in anticipation of breakfast. Beginning at approximately 7 a.m. each day, she frequently meows until breakfast is served, effectively functioning as an alarm clock. Afterward, she returns to bed and sleeps until the sun comes out. She then lounges upstairs, often in Sydney's room, before eventually moving to Trinh's studio for the day.</p>
+    <p class="chi-body">At approximately 6 p.m., Chi heads downstairs and waits for dinner from her automatic feeder. After eating at 7 p.m., she typically becomes more active, meowing and developing a case of the zoomies while carrying toys throughout the house. At night, she gets into bed, signaling to Trinh and Elmer that it is time for bed.</p>
+    <h2 class="chi-section">Personal life</h2>
+    <hr class="chi-section-divider">
+    <h2 class="chi-section">Favorite things</h2>
+    <hr class="chi-section-divider">
+    <h2 class="chi-section">Controversies</h2>
+    <hr class="chi-section-divider">
+    <h2 class="chi-section">Physical characteristics</h2>
+    <hr class="chi-section-divider">
+    <h2 class="chi-section">Gallery</h2>
+    <hr class="chi-section-divider">
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'h' || e.key === 'H') {
+        const overlay = document.querySelector('.grid-overlay');
+        overlay.style.display = overlay.style.display === 'none' ? 'grid' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>

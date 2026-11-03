@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>about — trinh.info</title>
+  <link rel="icon" href="assets/favicon.gif" type="image/gif">
+  <link rel="stylesheet" href="assets/nav.css?v=41">
+  <link rel="stylesheet" href="assets/site-gate.css?v=9">
+  <script src="assets/site-gate.js?v=6"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    /* page-scoped: black selection instead of the shared pink */
+    ::selection {
+      background: #000;
+      color: #fff;
+    }
+
+    ::-moz-selection {
+      background: #000;
+      color: #fff;
+    }
+
+    main {
+      padding: 1.67vw;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: minmax(0, 50.5vw) 22vw;
+      gap: 1.67vw;
+      align-items: start;
+    }
+
+    .about-main > * + * {
+      margin-top: 1.67vw;
+    }
+
+    .about-label + .about-body {
+      margin-top: 0.83vw;
+    }
+
+    .about-side {
+      grid-column: 2;
+    }
+
+    .about-body,
+    .about-list li,
+    .about-fine-print {
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-weight: 300;
+      font-size: 0.73vw;
+      color: #000;
+      line-height: 1.25;
+    }
+
+    /* fine print sits a notch smaller than body copy (~12px) */
+    .about-fine-print {
+      font-size: 0.63vw;
+    }
+
+    /* section labels — "Artist statement", "Selected clients", "Exhibitions" */
+    .about-label {
+      font-family: 'Source Serif Pro Light Italic', Georgia, 'Times New Roman', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-variation-settings: 'wght' 300;
+      font-size: 0.83vw;
+      color: #000;
+      line-height: 1.25;
+    }
+
+    .about-list {
+      list-style: none;
+      margin-top: 0.83vw;
+    }
+
+    .about-list li {
+      line-height: 1.5;
+    }
+
+    /* gap before a second section label in the side column */
+    .about-list + .about-label {
+      margin-top: 1.67vw;
+    }
+
+    /* web badges at the bottom of the blurb */
+    .about-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .about-list + .about-divider,
+    .about-divider + .about-fine-print,
+    .about-fine-print + .about-badges {
+      margin-top: 1.67vw;
+    }
+
+    .about-badges img {
+      display: block;
+      width: 88px;
+      height: 31px;
+      image-rendering: pixelated;
+    }
+
+    .about-badges img.framed {
+      width: auto;
+      height: 31px;
+      border: 1px solid #000;
+    }
+
+    /* unicode divider — from the old trinh.design nav-bio row-divider */
+    .about-divider {
+      overflow: hidden;
+      white-space: nowrap;
+      color: #000;
+      font-family: 'GT Pressura Mono Light', monospace;
+      font-size: 0.73vw;
+      line-height: 1.25;
+    }
+
+    .about-divider::before {
+      content: ':･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧';
+    }
+
+    @media (max-width: 1919px) {
+      .about-divider {
+        font-size: 0.97vw;
+      }
+    }
+
+    .about-body a,
+    .about-fine-print a,
+    .about-list a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .about-body a:hover,
+    .about-fine-print a:hover,
+    .about-list a:hover {
+      text-decoration: none;
+    }
+
+    .about-inline-gif {
+      display: inline-block;
+      height: 1.2em;
+      width: auto;
+      /* negative top/bottom margins keep the gif from stretching the line box */
+      margin: -1em 0.2em;
+      vertical-align: middle;
+      image-rendering: pixelated;
+    }
+
+    @media (max-width: 1919px) {
+      .about-body,
+      .about-list li {
+        font-size: 0.97vw;
+      }
+
+      .about-fine-print {
+        font-size: 0.83vw;
+      }
+
+      .about-label {
+        font-size: 1.11vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav></nav>
+  <main>
+    <div class="about">
+      <div class="about-main">
+        <p class="about-label">Artist statement</p>
+
+        <p class="about-body">Trinh<img class="about-inline-gif" src="assets/pixel/trinh.gif" alt=""> (b. 1998) is a multidisciplinary artist and designer based in San Francisco. Her work explores the softness of memories and dreams as they intersect with present-day apathy. Working across various mediums, she uses gentle figures and muted colors to depict everlasting girlhood against scenes of quiet existence, creating a wistful visual narrative. Her practice is inspired by subtle femininity<img class="about-inline-gif" src="assets/pixel/girlhood.gif" alt="">, memories of stationery stores, and the charm of 2000s video games<img class="about-inline-gif" src="assets/pixel/games.gif" alt="">.</p>
+
+        <div class="about-divider" aria-hidden="true"></div>
+
+        <p class="about-body">Welcome to my digital garden<img class="about-inline-gif" src="assets/pixel/garden.gif" alt=""></p>
+
+        <p class="about-body">When I was younger, I would dream of the day that I'd have enough resources to purchase my own set of encyclopedias<img class="about-inline-gif" src="assets/pixel/encyclopedia.gif" alt="">. There was something so satisfying about having all that knowledge gathered into one compact, complete, and organized collection. However, I began to realize that no analog collection could ever truly be complete so long as time kept passing<img class="about-inline-gif" src="assets/pixel/passing.gif" alt="">. Information evolves with time, and maintaining a complete body of knowledge can be impractical when bound to physical media. I moved on from my encyclopedia dream after I discovered how digital archives could remain complete even as information changed. Time stamps, edits, revisions—there was a sense of comfort in knowing that a website could act as an ever-evolving source of truth for any given topic.</p>
+
+        <p class="about-body">It's imperative to point out that the internet was a different place before web design patterns became standardized. This cycle has always been the same with emerging technologies, from cameras and phones to speakers. The process of finding the most usable design always leads to creative and novel explorations along the way. Years after a standard design is established, there is often a yearning for the playfulness that was lost with the era of exploration. The internet is no exception to this cycle, and I often find myself missing the naivety that came with the 2000s era of personal web.</p>
+
+        <p class="about-body">I've practiced extended cognition through the computer<img class="about-inline-gif" src="assets/pixel/computer.gif" alt=""> for as long as I can remember… it really is a foundational tool for how I create and explore. I've also always wanted a small, digital space for me to nourish and blossom with all things 'me'. This <a href="https://maggieappleton.com/garden-history" target="_blank">digital garden</a> is my attempt to bring those two things together: a dense, evolving archive of self that is housed in a little corner of the internet that is entirely my own. It's truly a space that exists solely for me, by me<img class="about-inline-gif" src="assets/pixel/universe.gif" alt="">.</p>
+      </div>
+
+      <div class="about-side">
+        <p class="about-label">Selected clients</p>
+        <ul class="about-list">
+          <li><a href="https://coyseio.com/" target="_blank">COYSEIO</a> &amp; <a href="https://www.instagram.com/i_am_kiko/?hl=en" target="_blank">Kiko Mizuhara</a></li>
+          <li><a href="https://www.instagram.com/kaleidoscopestore__official/" target="_blank">KaleidoscopeStore</a></li>
+          <li><a href="https://music.apple.com/us/artist/lace/1724199991" target="_blank">lace</a></li>
+        </ul>
+
+        <p class="about-label">Exhibitions</p>
+        <ul class="about-list">
+          <li><em>XingXing Mini Riso Show</em>, San Francisco, 2025</li>
+          <li><em>COYSEIO 2025 H/S HANNAM POP-UP</em>, Seoul, 2025</li>
+          <li><em>Seaglass Mag - Nautilus Launch Exhibition</em>, &amp;&amp; Gallery, Los Angeles, 2024</li>
+        </ul>
+
+        <p class="about-label">Features</p>
+        <ul class="about-list">
+          <li><a href="https://mp.weixin.qq.com/s/bfFANp80HAwE5_oyZQusnw" target="_blank"><em>Between softness, dreams, and memories</em></a>, KaleidoscopeStore, 2026</li>
+          <li><a href="https://www.instagram.com/p/DLUdNfrJ0yI/" target="_blank"><em>코이세이 오랑 협업한 도자기 작가 Trinh..?</em></a>, HWEEK 휙, 2025</li>
+        </ul>
+
+        <div class="about-divider" aria-hidden="true"></div>
+
+        <p class="about-fine-print">This is a personal, non-commercial website. Image assets are collected from around the web and used here as decorative elements. Ownership of these materials remains with their respective creators. If you are the rights holder of any material featured and would like it credited or removed, please contact <a href="mailto:info@trinh.studio">info [at] trinh.studio</a>.</p>
+
+        <div class="about-badges" aria-hidden="true">
+          <img src="assets/badges/1apple.gif" alt="">
+          <img src="assets/badges/best-viewed-comp.gif" alt="">
+          <img class="framed" src="assets/badges/badge3.gif" alt="">
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="assets/nav.js?v=17"></script>
+</body>
+</html>
