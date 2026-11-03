@@ -1,13 +1,19 @@
 (function () {
   var KEY = 'trinh-site-unlocked';
   var PASSWORD = 'iluvchi';
+  var DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-  if (localStorage.getItem(KEY) === 'true') return;
+  function isUnlocked() {
+    var unlockedAt = Number(localStorage.getItem(KEY));
+    return unlockedAt && (Date.now() - unlockedAt) < DURATION_MS;
+  }
+
+  if (isUnlocked()) return;
 
   function rand(a, b) { return a + Math.random() * (b - a); }
 
   function buildGate() {
-    if (localStorage.getItem(KEY) === 'true') return;
+    if (isUnlocked()) return;
 
     var overlay = document.createElement('div');
     overlay.id = 'site-gate';
@@ -87,7 +93,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (input.value === PASSWORD) {
-        localStorage.setItem(KEY, 'true');
+        localStorage.setItem(KEY, String(Date.now()));
         overlay.remove();
       } else {
         error.classList.add('show');
