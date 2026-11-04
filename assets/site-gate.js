@@ -35,26 +35,24 @@
     var input = overlay.querySelector('.site-gate-input');
     input.focus();
 
-    // same config as the home page's falling-particles.js: diary-particle.gif,
-    // 75 particles, 1.5vw (1.25vw at >=1920px), full opacity, pixelated.
+    // diary-particle.gif, fixed 22px (= 1.5vw at the site's 1440px laptop
+    // reference — see feedback_px_to_vw memory) instead of scaling with vw, so
+    // particle size stays stable as the window resizes instead of drifting.
+    // Fewer particles on small screens (less GPU headroom, smaller canvas).
     var container = overlay.querySelector('.site-gate-particles');
-    var COUNT = 75;
+    var COUNT = window.innerWidth <= 768 ? 25 : 75;
     var SWAY = 15;
-    function vwSize() {
-      var v = window.innerWidth >= 1920 ? 1.25 : 1.5;
-      return window.innerWidth * v / 100;
-    }
+    var SIZE = 22;
 
     var particles = [];
     for (var i = 0; i < COUNT; i++) {
       var img = document.createElement('img');
       img.src = 'assets/diary-particle.gif';
-      var size = vwSize();
-      img.style.cssText = 'position:absolute;top:0;left:0;width:' + size + 'px;height:auto;opacity:1;image-rendering:pixelated;';
+      img.style.cssText = 'position:absolute;top:0;left:0;width:' + SIZE + 'px;height:auto;opacity:1;image-rendering:pixelated;';
       container.appendChild(img);
       particles.push({
         el: img,
-        size: size,
+        size: SIZE,
         x: rand(0, window.innerWidth),
         y: rand(-window.innerHeight, window.innerHeight),
         speed: rand(0.2, 0.5),
@@ -63,14 +61,6 @@
         swayOffset: rand(0, Math.PI * 2)
       });
     }
-
-    window.addEventListener('resize', function () {
-      var px = vwSize();
-      for (var k = 0; k < particles.length; k++) {
-        particles[k].size = px;
-        particles[k].el.style.width = px + 'px';
-      }
-    });
 
     function tick(t) {
       if (!document.getElementById('site-gate')) return;
